@@ -21,7 +21,7 @@
 
 """
 
-from deezer.wrapper.deezer_connect import *
+from src.deenuxapi.deezer.wrapper.deezer_connect import *
 
 
 class PlayerInitFailedError(Exception):

@@ -29,7 +29,7 @@
 
 """
 
-from deezer.wrapper.deezer_import import *
+from src.deenuxapi.deezer.wrapper.deezer_import import *
 
 
 class DZConnectConfiguration(Structure):

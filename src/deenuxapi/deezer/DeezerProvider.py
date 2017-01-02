@@ -2,12 +2,12 @@ import http.client
 import json
 import os
 
-from Provider import Provider
-from deezer.Config import Config
-from model.Artist import Artist
-from model.Track import Track
-from model.User import User
-from deezer.Jukebox import Jukebox
+from src.deenuxapi.Provider import Provider
+from src.deenuxapi.deezer.Config import Config
+from src.deenuxapi.model.Artist import Artist
+from src.deenuxapi.model.Track import Track
+from src.deenuxapi.model.User import User
+from src.deenuxapi.deezer.Jukebox import Jukebox
 import time
 
 # TODO 1. remove the hardcoded encoding and use the one in the Content-Type header

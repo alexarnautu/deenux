@@ -1,4 +1,4 @@
-from Model import Model
+from src.deenuxapi.Model import Model
 
 
 class Artist(Model):

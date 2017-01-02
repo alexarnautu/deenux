@@ -1,6 +1,5 @@
-
-from Model import Model
-from model.Artist import Artist
+from src.deenuxapi.Model import Model
+from src.deenuxapi.model.Artist import Artist
 
 class Track(Model):
 

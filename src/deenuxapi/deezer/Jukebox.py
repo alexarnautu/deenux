@@ -1,8 +1,8 @@
 #!/usr/bin/env python
 # coding: utf8
-from Model import Model
-from deezer.wrapper.deezer_player import *
-from deezer.Config import Config
+from src.deenuxapi.Model import Model
+from src.deenuxapi.deezer.wrapper.deezer_player import *
+from src.deenuxapi.deezer.Config import Config
 from enum import Enum
 
 # TODO: clear debugging code and logs
