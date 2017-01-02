@@ -13,8 +13,15 @@ import time
 # TODO 1. remove the hardcoded encoding and use the one in the Content-Type header
 # TODO 2. check http exceptions and status code
 class DeezerProvider(Provider):
+    """
+    Provides media streaming and information services
+    """
 
     def __init__(self, token: str):
+        """
+        Needs an access token, so the sdk can check user's permissions and features
+        :param token:
+        """
         super().__init__("deezer")
         UrlManager.load(os.path.realpath(os.path.dirname(__file__)) + '/DeezerApi.json')
         self.__me = self.authenticate(token)
@@ -31,6 +38,11 @@ class DeezerProvider(Provider):
         })
 
     def authenticate(self, token: str) -> User:
+        """
+        Authenticates the user
+        :param token: The access token
+        :return: The authenticated User record
+        """
         http_conn = http.client.HTTPSConnection(UrlManager.API)
         http_conn.request('GET', UrlManager.Endpoint.user('me', {
             'access_token': token
@@ -46,6 +58,13 @@ class DeezerProvider(Provider):
         )
 
     def get_favourite_tracks(self, skip: int = 0, take: int = 25) -> list:
+        """
+        Gets a list of user's favourite tracks
+        Supports pagination parameters
+        :param skip: Pagination param (.NET's LINQ-like, also self-explainatory)
+        :param take: Like above
+        :return: List of trakcs
+        """
         http_conn = http.client.HTTPSConnection(UrlManager.API)
         http_conn.request('GET', UrlManager.add_query_params(UrlManager.Endpoint.user_favs('me'), {
             'index': skip,
