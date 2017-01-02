@@ -2,7 +2,7 @@
 # coding: utf8
 from src.deenuxapi.Model import Model
 from src.deenuxapi.deezer.wrapper.deezer_player import *
-from src.deenuxapi.deezer.Config import Config
+from src.deenuxapi.deezer.UrlManager import UrlManager
 from enum import Enum
 
 # TODO: clear debugging code and logs
@@ -36,9 +36,9 @@ class Jukebox():
 
         self.connection = Connection(
             self,
-            Config.get_app_setting('id'),
-            Config.get_app_setting('name'),
-            Config.get_app_setting('version'),
+            UrlManager.get_app_setting('id'),
+            UrlManager.get_app_setting('name'),
+            UrlManager.get_app_setting('version'),
             self.user_cache_path,
             self.connection_event_callback, 0, 0
         )
@@ -77,7 +77,7 @@ class Jukebox():
 
     def start_playback(self, playable: Playables, entity: Model):
         if (playable != Jukebox.Playables.USER and playable != Jukebox.Playables.RADIO):
-            url = "dzmedia:///{0}/2222808742"
+            url = "dzmedia:///{0}/{1}"
         else:
             url = "dzradio:///{0}-{1}"
 
