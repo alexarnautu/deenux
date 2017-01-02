@@ -24,7 +24,7 @@ class DeezerProvider(Provider):
         """
         super().__init__("deezer")
         UrlManager.load(os.path.realpath(os.path.dirname(__file__)) + '/DeezerApi.json')
-        self.__me = self.authenticate(token)
+        self.__me = self.get_user_from_token(token)
         self.__jukebox = Jukebox(token)
         self.__token = token
 
@@ -37,11 +37,12 @@ class DeezerProvider(Provider):
             'access_token': self.__token
         })
 
-    def authenticate(self, token: str) -> User:
+    @staticmethod
+    def get_user_from_token(token: str) -> User:
         """
-        Authenticates the user
+        Gets the User of the authentication token
         :param token: The access token
-        :return: The authenticated User record
+        :return: A User record
         """
         http_conn = http.client.HTTPSConnection(UrlManager.API)
         http_conn.request('GET', UrlManager.Endpoint.user('me', {
