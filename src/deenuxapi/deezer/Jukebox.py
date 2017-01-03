@@ -2,7 +2,7 @@
 # coding: utf8
 from src.deenuxapi.Model import Model
 from src.deenuxapi.deezer.wrapper.deezer_player import *
-from src.deenuxapi.deezer.UrlManager import UrlManager
+from src.deenuxapi.deezer.ResourceManager import ResourceManager
 from enum import Enum
 
 # TODO: clear debugging code and logs
@@ -28,18 +28,14 @@ class Jukebox():
     def __init__(self, token: str, debug_mode=True):
         self.debug_mode = debug_mode
 
-        if platform.system() == u'Windows':
-            self.user_cache_path = u"c:\\dzr\\dzrcache_NDK_SAMPLE"  # SET the user cache path, the path must exist
-        else:
-            self.user_cache_path = u"/var/tmp/dzrcache_NDK_SAMPLE"  # SET the user cache path, the path must exist
+        user_cache_path = ResourceManager.get_app_setting('cache_path_' + platform.system().lower())
         self.context = self.AppContext()
 
         self.connection = Connection(
             self,
-            UrlManager.get_app_setting('id'),
-            UrlManager.get_app_setting('name'),
-            UrlManager.get_app_setting('version'),
-            self.user_cache_path,
+            ResourceManager.get_app_setting('id'),
+            ResourceManager.get_app_setting('name'),
+            ResourceManager.get_app_setting('version'),
             self.connection_event_callback, 0, 0
         )
 
@@ -51,7 +47,7 @@ class Jukebox():
             print ("Device ID:", self.connection.get_device_id())
         self.player = Player(self, self.connection.handle)
         self.player.set_event_cb(self.player_cb)
-        self.connection.cache_path_set(self.connection.user_profile_path.encode('utf8'), activity_operation_cb=self.cache_path_set_cb,
+        self.connection.cache_path_set(user_cache_path.encode('utf8'), activity_operation_cb=self.cache_path_set_cb,
                                        operation_userdata=self)
         self.connection.set_access_token(token.encode('utf8'))
         self.connection.set_offline_mode(False)
@@ -68,20 +64,14 @@ class Jukebox():
         if self.debug_mode:
             print (message)
 
-    class Playables(Enum):
-        TRACK = 'track'
-        ALBUM = 'album'
-        PLAYLIST = 'playlist'
-        USER = "user"
-        RADIO = "radio"
-
-    def start_playback(self, playable: Playables, entity: Model):
-        if (playable != Jukebox.Playables.USER and playable != Jukebox.Playables.RADIO):
+    def start_playback(self, playable: Model):
+        type_name = type(playable).__name__.lower()
+        if type_name == 'track' or type_name == 'album' or type_name == 'playlist':
             url = "dzmedia:///{0}/{1}"
         else:
             url = "dzradio:///{0}-{1}"
 
-        self._load_content(url.format(playable.value, entity.id).encode('utf8'))
+        self._load_content(url.format(type_name, playable.id).encode('utf8'))
         self.player.play()
 
     def stop_playback(self):

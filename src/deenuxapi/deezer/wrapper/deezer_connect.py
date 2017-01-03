@@ -133,13 +133,12 @@ class ConnectionStreamingMode:
 class Connection:
     """Manage connection and user session"""
 
-    def __init__(self, context, app_id, product_id, product_build_id, user_profile_path, dz_connect_on_event_cb=None,
+    def __init__(self, context, app_id, product_id, product_build_id, dz_connect_on_event_cb=None,
                  anonymous_blob=None, dz_connect_crash_reporting_delegate=None):
         """
         :param app_id: The ID of the application
         :param product_id: The name of your application
         :param product_build_id: The version number
-        :param user_profile_path: The cache path of the user. Deprecated.
         :param dz_connect_on_event_cb: The event listener to connection
             operations
         :param anonymous_blob: Deprecated
@@ -147,7 +146,6 @@ class Connection:
         :type app_id: unicode
         :type product_id: unicode
         :type product_build_id: unicode
-        :type user_profile_path: unicode
         :type dz_connect_on_event_cb: function
         :type dz_connect_crash_reporting_delegate: function
         """
@@ -155,7 +153,6 @@ class Connection:
         self.app_id = app_id
         self.product_id = product_id
         self.product_build_id = product_build_id
-        self.user_profile_path = user_profile_path
         self.dz_connect_on_event_cb = dz_on_event_cb_func(dz_connect_on_event_cb or 0)
         self.anonymous_blob = anonymous_blob
         self.dz_connect_crash_reporting_delegate = dz_connect_crash_reporting_delegate_func(
@@ -166,7 +163,7 @@ class Connection:
         config = DZConnectConfiguration(c_char_p(self.app_id.encode('utf8')),
                                         c_char_p(self.product_id.encode('utf8')),
                                         c_char_p(self.product_build_id.encode('utf8')),
-                                        c_char_p(self.user_profile_path.encode('utf8')),
+                                        None, # User cache path (obsolete), use self.cache_path_set instead
                                         self.dz_connect_on_event_cb,
                                         c_void_p(self.anonymous_blob),
                                         self.dz_connect_crash_reporting_delegate)
