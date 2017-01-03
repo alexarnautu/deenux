@@ -23,19 +23,26 @@ class DeezerProvider(Provider):
         :param token:
         """
         super().__init__("deezer")
-        UrlManager.load(os.path.realpath(os.path.dirname(__file__)) + '/DeezerApi.json')
-        self.__me = self.get_user_from_token(token)
-        self.__jukebox = Jukebox(token)
-        self.__token = token
+        UrlManager.load(os.path.realpath(os.path.dirname(__file__)) + '/resources/DeezerApi.json')
+        self._me = self.get_user_from_token(token)
+        self._jukebox = Jukebox(token)
+        self._token = token
 
     @property
     def jukebox(self):
-        return self.__jukebox
+        return self._jukebox
 
-    def __tokenize(self, url: str) -> str:
-        return UrlManager.add_query_params(url, {
-            'access_token': self.__token
-        })
+    @staticmethod
+    def _request(method: str, url: str) -> dict:
+        """
+        Performs a synchronously HTTP request to the Web Api
+        :param method: HTTP request method
+        :param url: The tip of the url
+        :return: Returns json parsed response data as a dictionary
+        """
+        http_conn = http.client.HTTPSConnection(UrlManager.API)
+        http_conn.request(method, url)
+        return json.loads(http_conn.getresponse().read().decode('utf8')) # TODO 1
 
     @staticmethod
     def get_user_from_token(token: str) -> User:
@@ -44,12 +51,10 @@ class DeezerProvider(Provider):
         :param token: The access token
         :return: A User record
         """
-        http_conn = http.client.HTTPSConnection(UrlManager.API)
-        http_conn.request('GET', UrlManager.Endpoint.user('me', {
+        data = DeezerProvider._request('GET', UrlManager.Endpoint.user('me', {
             'access_token': token
         })) # TODO 2
 
-        data = json.loads(http_conn.getresponse().read().decode('utf-8')) # TODO 1
         return User (
             id=data['id'],
             username=data['name'],
@@ -66,14 +71,11 @@ class DeezerProvider(Provider):
         :param take: Like above
         :return: List of trakcs
         """
-        http_conn = http.client.HTTPSConnection(UrlManager.API)
-        http_conn.request('GET', UrlManager.add_query_params(UrlManager.Endpoint.user_favs('me'), {
+        data = self._request('GET', UrlManager.add_query_params(UrlManager.Endpoint.user_favs('me'), {
             'index': skip,
             'limit': take,
-            'access_token': self.__token
+            'access_token': self._token
         })) # TODO 2
-
-        data = json.loads(http_conn.getresponse().read().decode('utf-8')) # TODO 1
 
         return list(map(lambda t: Track (
             id=t['id'],

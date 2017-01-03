@@ -1,0 +1,21 @@
+{
+
+  "scheme": "https",
+  "hostname": "api.deezer.com",
+  "port": "443",
+  "endpoints": {
+    "user": "user/{0}",
+    "user_favs": "user/{0}/tracks",
+    "track": "track/{0}"
+  },
+
+  "app": {
+    "id": "134246",
+    "name": "Deenux",
+    "secret_key": "21dc26ceabc12ae04b38eceea5330bd6",
+    "version": "0.1",
+    "cache_path_unix": "~/.deenux/",
+    "cache_path_win32": ""
+  }
+
+}
