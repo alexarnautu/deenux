@@ -17,15 +17,15 @@ class DeezerProvider(Provider):
     Provides media streaming and information services
     """
 
+    _api_conn = http.client.HTTPSConnection(ResourceManager.API)
+
     def __init__(self, token: str):
         """
         Needs an access token, so the sdk can check user's permissions and features
         :param token:
         """
         super().__init__("deezer")
-        ResourceManager.load(os.path.realpath(os.path.dirname(__file__)) + '/resources/DeezerApi.json')
 
-        DeezerProvider._api_conn = http.client.HTTPSConnection(ResourceManager.API)
         self._me = self.get_user_from_token(token)
         self._jukebox = Jukebox(token)
         self._token = token
@@ -42,7 +42,7 @@ class DeezerProvider(Provider):
         :param url: The tip of the url
         :return: Returns json parsed response data as a dictionary
         """
-        DeezerProvider._api_conn.request(method, '/' + url)
+        DeezerProvider._api_conn.request(method, url)
         return json.loads(DeezerProvider._api_conn.getresponse().read().decode('utf8')) # TODO 1
 
     @staticmethod

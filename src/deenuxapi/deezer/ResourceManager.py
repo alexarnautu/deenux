@@ -8,12 +8,14 @@ class ResourceManager:
     """
 
     @staticmethod
-    def load (settings_path: str):
+    def load ():
         """
         Loads and parses the settings from the json file
         :param settings_path: Path of the json settings file
         """
-        ResourceManager.__settings = json.loads(open(settings_path).read())
+        ResourceManager.__settings = json.loads(
+            open(os.path.realpath(os.path.dirname(__file__)) + '/resources/DeezerApi.json').read()
+        )
         ResourceManager.__endpoint_tpl = ResourceManager.__settings['endpoints']
 
         url_prefix = ResourceManager.__settings['hostname'] + ':' + ResourceManager.__settings['port']
@@ -53,3 +55,4 @@ class ResourceManager:
             url = ResourceManager.__endpoint_tpl[name].format(ids)
         return '/' + ResourceManager.add_query_params(url, params)
 
+ResourceManager.load()

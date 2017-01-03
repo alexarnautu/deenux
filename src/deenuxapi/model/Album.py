@@ -1,5 +1,5 @@
 from src.deenuxapi.Model import Model
 
 
-class Playlist(Model):
+class Album(Model):
     pass

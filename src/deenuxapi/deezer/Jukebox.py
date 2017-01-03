@@ -3,7 +3,6 @@
 from src.deenuxapi.Model import Model
 from src.deenuxapi.deezer.wrapper.deezer_player import *
 from src.deenuxapi.deezer.ResourceManager import ResourceManager
-from enum import Enum
 
 # TODO: clear debugging code and logs
 class Jukebox():
@@ -64,19 +63,21 @@ class Jukebox():
         if self.debug_mode:
             print (message)
 
-    def start_playback(self, playable: Model):
+    def start(self, playable: Model):
         type_name = type(playable).__name__.lower()
         if type_name == 'track' or type_name == 'album' or type_name == 'playlist':
             url = "dzmedia:///{0}/{1}"
-        else:
+        elif type_name == 'radio' or type_name == 'artist' or type_name == 'user':
             url = "dzradio:///{0}-{1}"
+        else:
+            # TODO: raise `not playable` error
+            pass
 
         self._load_content(url.format(type_name, playable.id).encode('utf8'))
         self.player.play()
 
-    def stop_playback(self):
-        if self.player.is_playing:
-            self.player.stop()
+    def stop(self):
+        self.player.stop()
 
     def toggle_play_pause(self):
         if self.player.is_playing:
@@ -94,14 +95,14 @@ class Jukebox():
         self.log("PREVIOUS => {}".format(self.context.dz_content_url))
         self.player.play(command=PlayerCommand.START_TRACKLIST, index=PlayerIndex.PREVIOUS)
 
-    def playback_toggle_repeat(self):
+    def toggle_repeat(self):
         self.context.repeat_mode += 1
         if self.context.repeat_mode > PlayerRepeatMode.ALL:
             self.context.repeat_mode = PlayerRepeatMode.OFF
         self.log("REPEAT mode => {}".format(self.context.repeat_mode))
         self.player.set_repeat_mode(self.context.repeat_mode)
 
-    def playback_toggle_random(self):
+    def toggle_random(self):
         self.context.is_shuffle_mode = not self.context.is_shuffle_mode
         self.log("SHUFFLE mode => {}".format("ON" if self.context.is_shuffle_mode else "OFF"))
         self.player.enable_shuffle_mode(self.context.is_shuffle_mode)
