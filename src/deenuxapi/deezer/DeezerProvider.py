@@ -10,6 +10,7 @@ from src.deenuxapi.model.User import User
 from src.deenuxapi.deezer.Jukebox import Jukebox
 import time
 
+
 # TODO 1. remove the hardcoded encoding and use the one in the Content-Type header
 # TODO 2. check http exceptions and status code
 class DeezerProvider(Provider):
@@ -26,8 +27,8 @@ class DeezerProvider(Provider):
         """
         super().__init__("deezer")
 
-        self._me = self.get_user_from_token(token)
         self._jukebox = Jukebox(token)
+        self._me = self.get_user_from_token(token)
         self._token = token
 
     @property
@@ -87,9 +88,11 @@ class DeezerProvider(Provider):
             )
         ), data['data']))
 
+    def authorize(self) -> str:
+        pass
+
     def get_playlists(self):
         pass
 
     def get_favourite_artists(self):
         pass
-
