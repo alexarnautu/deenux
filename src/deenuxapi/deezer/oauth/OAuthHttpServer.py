@@ -1,27 +1,27 @@
 
 from http.server import HTTPServer, BaseHTTPRequestHandler
 
+
 class OAuthHttpServer(HTTPServer):
 
     def __init__ (self, *args):
         super().__init__(*args)
-        self._authorized = False
+        self._code = None
 
     @property
-    def authorized(self) -> bool:
-        return self._authorized
-    @authorized.setter
-    def authorized(self, value: bool) -> None:
-        self._authorized = value
-    @property
-    def code(self) -> bool:
+    def code(self) -> str:
         return self._code
     @code.setter
-    def code(self, value: bool) -> None:
+    def code(self, value: str) -> None:
         self._code = value
 
-    def serve_until_authorization(self) -> str:
-        while not self.authorized:
+    def serve_until_authorized(self) -> str:
+        """
+        The server accepts HTTP requests, until there is a code
+        When there is a code, it means that the user is authorized
+        :return: The authorization code
+        """
+        while self.code is None:
             self.handle_request()
         return self.code
 
@@ -33,7 +33,12 @@ class OAuthRequestHandler(BaseHTTPRequestHandler):
                        "</script></head></html>".encode('ascii')
 
     @staticmethod
-    def _parse_params(url):
+    def _parse_params(url: str) -> dict:
+        """
+        Parses the params from an url to a dictionary
+        :param url:
+        :return:
+        """
         ans = dict()
         for param in url.split('?')[1].split('&'):
             (key, val) = param.split('=')
@@ -41,18 +46,16 @@ class OAuthRequestHandler(BaseHTTPRequestHandler):
 
         return ans
 
-    def reject_request(self):
-        self.send_response(400)
-        self.send_header('Content-type', 'text/html')
-        self.end_headers()
-        self.wfile.write("No code query param".encode('ascii'))
-
     def do_GET(self):
-
+        """
+        Handles GET requests, and sets on server object a code, if in the current GET request
+        there is a query param with `code` key. Otherwise, it rejects the request
+        (Good URL example /?code=whatever)
+        :return:
+        """
         try:
-            params = self._parse_params(self.path)
-            code = params['code']
-            
+            code = self._parse_params(self.path)['code']
+
             self.send_response(200)
             self.send_header('Content-type', 'text/html')
             self.end_headers()
@@ -62,5 +65,9 @@ class OAuthRequestHandler(BaseHTTPRequestHandler):
             self.server.code = code
         except:
             # Invalid request / url
-            self.reject_request()
+            # Reject
+            self.send_response(400)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            self.wfile.write("No code query param".encode('ascii'))
 
