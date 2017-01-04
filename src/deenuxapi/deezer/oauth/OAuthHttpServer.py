@@ -32,23 +32,35 @@ class OAuthRequestHandler(BaseHTTPRequestHandler):
                        "close();" \
                        "</script></head></html>".encode('ascii')
 
-    def _parse_params(self, url):
+    @staticmethod
+    def _parse_params(url):
         ans = dict()
-        for param in url.split('&'):
+        for param in url.split('?')[1].split('&'):
             (key, val) = param.split('=')
             ans[key] = val
 
         return ans
 
-    def do_GET(self):
-        code = self._parse_params(self.path[1:].split('?')[1])['code']
-
-        self.send_response(200)
+    def reject_request(self):
+        self.send_response(400)
         self.send_header('Content-type', 'text/html')
         self.end_headers()
+        self.wfile.write("No code query param".encode('ascii'))
 
-        self.wfile.write(self.close_window)
+    def do_GET(self):
 
-        self.server.authorized = True
-        self.server.code = code
+        try:
+            params = self._parse_params(self.path)
+            code = params['code']
+            
+            self.send_response(200)
+            self.send_header('Content-type', 'text/html')
+            self.end_headers()
+            self.wfile.write(self.close_window)
+
+            self.server.authorized = True
+            self.server.code = code
+        except:
+            # Invalid request / url
+            self.reject_request()
 
