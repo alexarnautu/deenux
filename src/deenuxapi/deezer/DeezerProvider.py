@@ -8,6 +8,7 @@ from src.deenuxapi.model.Artist import Artist
 from src.deenuxapi.model.Track import Track
 from src.deenuxapi.model.User import User
 from src.deenuxapi.deezer.Jukebox import Jukebox
+from urllib.parse import quote
 import time
 
 
@@ -88,11 +89,37 @@ class DeezerProvider(Provider):
             )
         ), data['data']))
 
-    def authorize(self) -> str:
-        pass
+    @staticmethod
+    def authorize() -> str:
+        """
+        Authorises the user using OAuth and retrieves the authentication token
+        :return: The access token
+        """
+        import webbrowser
+        from src.deenuxapi.deezer.oauth.OAuthHttpServer import OAuthHttpServer, OAuthRequestHandler
+
+        server_address = ('', 0) # Binding to port 0, so the OS can allocate a free random port for us
+        httpd = OAuthHttpServer(server_address, OAuthRequestHandler)
+
+        oauth_url = ResourceManager.get_app_setting("oauth_url").format(
+            ResourceManager.get_app_setting('id'),  # The application Id
+            quote("http://localhost:{0}".format(httpd.server_port), safe=''), # Redirection URL (to our dear local server, of course)
+            ','.join(ResourceManager.get_app_setting('perms'))  # Permissions
+        )
+        webbrowser.open(oauth_url)
+        code = httpd.serve_until_authorized()
+
+        data = DeezerProvider._request("GET", ResourceManager.get_app_setting('token_url').format(
+            ResourceManager.get_app_setting('id'),
+            ResourceManager.get_app_setting('secret_key'), # !!! HIGHLY MALICIOUS
+            code
+        ))
+
+        return data['access_token']
 
     def get_playlists(self):
         pass
 
     def get_favourite_artists(self):
         pass
+
