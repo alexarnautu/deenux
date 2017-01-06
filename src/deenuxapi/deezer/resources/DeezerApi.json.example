@@ -15,6 +15,8 @@
     "secret_key": "6adc26ceabc12ae04b38eceea5f30bd6",
     "version": "0.1",
     "oauth_url": "https://connect.deezer.com/oauth/auth.php?app_id={0}&redirect_uri={1}&perms={2}",
+    "token_url": "https://connect.deezer.com/oauth/access_token.php?app_id={0}&secret={1}&code={2}&output=json",
+
     "perms": [],
 
     "cache_path_linux": "/var/tmp/deenuxcache",
