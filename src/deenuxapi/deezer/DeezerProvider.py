@@ -96,7 +96,8 @@ class DeezerProvider(Provider):
         :return: The access token
         """
         import webbrowser
-        from src.deenuxapi.deezer.oauth.OAuthHttpServer import OAuthHttpServer, OAuthRequestHandler
+        from src.deenuxapi.deezer.oauth.OAuthHttpServer import OAuthHttpServer
+        from src.deenuxapi.deezer.oauth.OAuthRequestHandler import OAuthRequestHandler
 
         server_address = ('', 0) # Binding to port 0, so the OS can allocate a free random port for us
         httpd = OAuthHttpServer(server_address, OAuthRequestHandler)

@@ -1,6 +1,6 @@
 import json
 import os
-from typing import Union
+from urllib.parse import urlencode
 
 class ResourceManager:
     """
@@ -22,23 +22,6 @@ class ResourceManager:
         ResourceManager.API = url_prefix
 
     @staticmethod
-    def add_query_params(url: str, params: dict) -> str:
-        """
-        Adds query params to a url
-        This will not handle duplicate keys
-        :param url: Base url
-        :param params: Params to add. If this is an empty dict or None, the function will return the url
-        :return: Modified url, with added params
-        """
-        if not params:
-            return url
-        return url + ('&' if '?' in url else '?') + \
-            '&'.join(map(
-                lambda x: str(x) + '=' + str(params[x]),
-                params.keys()
-            ))
-
-    @staticmethod
     def get_app_setting(setting):
         """
         Get the app settings
@@ -49,10 +32,19 @@ class ResourceManager:
 
     @staticmethod
     def get_endpoint(name: str, ids: any, params: dict):
+        """
+        Gets endpoint url tip.
+        :param name: Name of the endpoint, specified in the resource
+        :param ids: An id or an array representing the required ids for the string formatting
+        :param params: Additional query params, as a dictionary
+        :return: The built url tip
+        """
         if type(ids) is list:
             url = ResourceManager.__endpoint_tpl[name].format(*ids)
         else:
             url = ResourceManager.__endpoint_tpl[name].format(ids)
-        return '/' + ResourceManager.add_query_params(url, params)
+        if params:
+            url += ('&' if '?' in url else '?') + urlencode(params)
+        return '/' + url
 
 ResourceManager.load()
