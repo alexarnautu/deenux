@@ -1,15 +1,37 @@
-from PyQt5.QtWidgets import QApplication, QMainWindow, QHBoxLayout, QVBoxLayout, QLabel, QPushButton
-from PyQt5.QtCore import QObject, QUrl
-from PyQt5.QtGui import QGuiApplication
-from PyQt5.QtQuick import QQuickView
-from PyQt5.QtQml import qmlRegisterType, QQmlComponent, QQmlEngine, QQmlApplicationEngine
-import PyQt5
-import sys, os
+from PyQt5 import QtWidgets
+from src.AppContext import AppContext
+from src.deenuxapi.Provider import Provider
+from src.components.player.Player import Player
+import sys
 
 class Application:
 
     def __init__(self):
-        self.launch()
+        self.init_context()
 
     def launch (self):
+
+        app = QtWidgets.QApplication(sys.argv)
+        self.setup_ui()
+        self.create_connections()
+
+        self._main_window.show()
+        sys.exit(app.exec_())
+
+    def init_context(self):
+        self.context = AppContext (
+            deezerService = Provider("deezer")
+        )
+
+    def setup_ui(self):
+        self._main_window = window = QtWidgets.QMainWindow()
+        main_layout = QtWidgets.QVBoxLayout()
+
+        self.player = Player(self.context, window)
+
+        main_layout.addWidget(self.player)
+        window.setLayout(main_layout)
+
+
+    def create_connections(self):
         pass
