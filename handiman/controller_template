@@ -1,0 +1,6 @@
+
+
+class {0}Controller:
+
+    def __init__(self, context):
+        pass

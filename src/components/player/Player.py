@@ -1,7 +1,6 @@
 
 from PyQt5 import QtWidgets, QtCore
 from src.components.player.PlayerController import PlayerController
-import os
 
 
 class Player(QtWidgets.QWidget):

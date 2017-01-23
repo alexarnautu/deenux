@@ -1,0 +1,37 @@
+
+from PyQt5 import QtWidgets, QtCore
+from src.components.{0}.{1}Controller import {1}Controller
+
+
+class {1}(QtWidgets.QWidget):
+
+    def create_connections(self):
+        pass
+
+    @property
+    def controller(self):
+        return self._controller
+
+    def __init__(self, *args):
+        super({1}, self).__init__(*(args[1:]))
+        self._controller = {1}Controller(args[0])
+
+        self.setup_ui()
+        self.retranslate_ui()
+        self.create_connections()
+
+    def setup_ui(self):
+        pass
+
+    def retranslate_ui(self):
+        pass
+
+    def create_connections(self):
+        pass
+
+if __name__ == '__main__':
+    import sys
+    app = QtWidgets.QApplication(sys.argv)
+    widget = {1}()
+    widget.show()
+    sys.exit(app.exec_())
