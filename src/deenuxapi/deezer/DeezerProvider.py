@@ -21,16 +21,27 @@ class DeezerProvider(Provider):
 
     _api_conn = http.client.HTTPSConnection(ResourceManager.API)
 
-    def __init__(self, token: str):
+    def __init__(self, token: str=None):
         """
         Needs an access token, so the sdk can check user's permissions and features
         :param token:
         """
         super().__init__("deezer")
 
-        self._jukebox = Jukebox(token)
-        self._me = self.get_user_from_token(token)
-        self._token = token
+        self.token = token
+
+    @property
+    def token(self):
+        return self._token
+
+    @token.setter
+    def token(self, token):
+        if token is not None:
+            self._jukebox = Jukebox(token)
+            self._me = self.get_user_from_token(token)
+            self._token = token
+        else:
+            self._token = None
 
     @property
     def jukebox(self):

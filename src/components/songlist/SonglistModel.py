@@ -8,7 +8,6 @@ class SonglistModel(QtCore.QAbstractTableModel):
 
         # Processing the data for display
         self._data = list(map(lambda t : [t.id, t.title, t.artist.name], data))
-        print(self._data)
         self._header = header
 
     def rowCount(self, parent):

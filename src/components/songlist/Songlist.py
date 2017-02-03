@@ -24,7 +24,6 @@ class Songlist(QtWidgets.QWidget):
     def setup_ui(self):
         self.horizontalLayout = QtWidgets.QHBoxLayout(self)
         self.songlistTable = QtWidgets.QTableView()
-        print(self.songlistTable.selectionModel)
         self.songlistModel = SonglistModel(self.controller.context.deezerService.get_favourite_tracks(0, 50000), ["Title", "Artist"])
         self.songlistTable.setModel(self.songlistModel)
 
