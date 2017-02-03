@@ -21,7 +21,7 @@ class Application:
 
     def init_context(self):
         self.context = AppContext (
-            deezerService = DeezerProvider(DeezerProvider.authorize())
+            deezer_service = DeezerProvider(DeezerProvider.authorize())
         )
 
     def setup_ui(self):
@@ -32,7 +32,6 @@ class Application:
         self.player = Player(self.context)
 
         main_layout.addLayout(center_layout)
-        main_layout.addStretch()
         main_layout.addWidget(self.player)
 
         self.songlist = Songlist(self.context)

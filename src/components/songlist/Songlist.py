@@ -22,18 +22,21 @@ class Songlist(QtWidgets.QWidget):
         self.create_connections()
 
     def setup_ui(self):
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self)
-        self.songlistTable = QtWidgets.QTableView()
-        self.songlistModel = SonglistModel(self.controller.context.deezerService.get_favourite_tracks(0, 50000), ["Title", "Artist"])
-        self.songlistTable.setModel(self.songlistModel)
+        self.horizontal_layout = QtWidgets.QHBoxLayout(self)
+        self.songlist_table = QtWidgets.QTableView()
+        self.songlist_model = SonglistModel(self.controller.context.deezer_service.get_favourite_tracks(0, 50000), ["Title", "Artist"])
+        self.songlist_table.setModel(self.songlist_model)
 
-        self.horizontalLayout.addWidget(self.songlistTable)
+        self.songlist_table.setColumnWidth(0, self.width() // 3)
+        self.songlist_table.horizontalHeader().setStretchLastSection(True)
+
+        self.horizontal_layout.addWidget(self.songlist_table)
 
     def retranslate_ui(self):
         pass
 
     def create_connections(self):
-        self.songlistTable.doubleClicked.connect(self.controller.on_line_double_click)
+        self.songlist_table.doubleClicked.connect(self.controller.on_line_double_click)
 
 if __name__ == '__main__':
     import sys
