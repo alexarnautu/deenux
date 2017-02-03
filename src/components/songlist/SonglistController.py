@@ -10,4 +10,4 @@ class SonglistController:
         self._context = context
 
     def on_line_double_click(self, index):
-        print(index)
+        self.context.deezerService.jukebox.start(index.model().table_data[index.row()][0])
