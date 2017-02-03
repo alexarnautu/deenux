@@ -2,5 +2,9 @@
 
 class {0}Controller:
 
+    @property
+    def context(self):
+        return self._context
+
     def __init__(self, context):
-        pass
+        self._context = context
