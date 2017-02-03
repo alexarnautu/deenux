@@ -182,14 +182,8 @@ class Jukebox():
         :return: int
         """
         # We retrieve our deezerApp
-        app = cast(userdata, py_object).value
         event_type = Connection.get_event(event)
         app.log(u"++++ CONNECT_EVENT ++++ {0}".format(ConnectionEvent.event_name(event_type)))
-        # After User is authenticated we can start the player
-        if event_type == ConnectionEvent.USER_LOGIN_OK:
-            app.player.load(app.context.dz_content_url)
-        if event_type == ConnectionEvent.USER_LOGIN_FAIL_USER_INFO:
-            app.shutdown()
         return 0
 
     @staticmethod
