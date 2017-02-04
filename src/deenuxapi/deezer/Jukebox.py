@@ -76,7 +76,6 @@ class Jukebox:
         else:
             # TODO: raise `not playable` error
             pass
-        self.last_played = playable
 
         self._load_content(url.format(type_name, playable.id).encode('utf8'))
         self.player.play()
@@ -133,11 +132,6 @@ class Jukebox:
             self.connection.shutdown(activity_operation_cb=self.dz_connect_deactivate_cb,
                                      operation_user_data=self)
 
-    def dispatch_events(self, event_name):
-        if event_name in self.event_handlers:
-            for handler in self.event_handlers[event_name]:
-                handler(self)
-
     # We set the callback for player events, to print various logs and listen to events
     def player_event_callback(self, handle, event, userdata):
         """Listen to events and call the appropriate functions
@@ -177,7 +171,10 @@ class Jukebox:
         if event_type == PlayerEvent.QUEUELIST_TRACK_RIGHTS_AFTER_AUDIOADS:
             app.player.play_audio_ads()
 
-        self.dispatch_events(event_name)
+        plr = self.player
+        if event_name in self.event_handlers:
+            for handler in self.event_handlers[event_name]:
+                handler(self, plr.current_content, plr.is_playing, plr.active)
 
         return 0
 
@@ -198,7 +195,9 @@ class Jukebox:
         event_name = 'DZ_CONNECT_EVENT_' + ConnectionEvent.event_name(Connection.get_event(event))
         app.log(u"++++ CONNECT_EVENT ++++ {0}".format(event_name))
 
-        self.dispatch_events(event_name)
+        if event_name in self.event_handlers:
+            for handler in self.event_handlers[event_name]:
+                handler(self)
 
         return 0
 
