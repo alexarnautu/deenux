@@ -21,7 +21,7 @@ class Application:
 
     def init_context(self):
         self.context = AppContext (
-            deezer_service = DeezerProvider(DeezerProvider.authorize())
+            deezer = DeezerProvider(DeezerProvider.authorize())
         )
 
     def setup_ui(self):

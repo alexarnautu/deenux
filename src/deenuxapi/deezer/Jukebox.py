@@ -5,7 +5,9 @@ from src.deenuxapi.deezer.wrapper.deezer_player import *
 from src.deenuxapi.deezer.ResourceManager import ResourceManager
 
 # TODO: clear debugging code and logs
-class Jukebox():
+
+
+class Jukebox:
     """
     A simple deezer application using NativeSDK
     Initialize a connection and a player, then load and play a song.
@@ -55,6 +57,8 @@ class Jukebox():
         self.dz_player_deactivate_cb = dz_activity_operation_cb_func(self.player_on_deactivate_cb)
         self.dz_connect_deactivate_cb = dz_activity_operation_cb_func(self.connection_on_deactivate_cb)
 
+        self.event_handlers = {}
+
     def log(self, message):
         """
         Print a log message unless debug_mode is False
@@ -72,6 +76,7 @@ class Jukebox():
         else:
             # TODO: raise `not playable` error
             pass
+        self.last_played = playable
 
         self._load_content(url.format(type_name, playable.id).encode('utf8'))
         self.player.play()
@@ -128,9 +133,13 @@ class Jukebox():
             self.connection.shutdown(activity_operation_cb=self.dz_connect_deactivate_cb,
                                      operation_user_data=self)
 
+    def dispatch_events(self, event_name):
+        if event_name in self.event_handlers:
+            for handler in self.event_handlers[event_name]:
+                handler(self)
+
     # We set the callback for player events, to print various logs and listen to events
-    @staticmethod
-    def player_event_callback(handle, event, userdata):
+    def player_event_callback(self, handle, event, userdata):
         """Listen to events and call the appropriate functions
         :param handle: The player handle.
         :type: p_type
@@ -144,6 +153,7 @@ class Jukebox():
         # We retrieve our deezer app
         app = cast(userdata, py_object).value
         event_type = Player.get_event(event)
+        event_name = 'DZ_PLAYER_EVENT_' + PlayerEvent.event_name(event_type)
         if event_type == PlayerEvent.QUEUELIST_TRACK_SELECTED:
             can_pause_unpause = c_bool()
             can_seek = c_bool()
@@ -161,16 +171,18 @@ class Jukebox():
             if next_dz_api_info:
                 app.log(u"\tnext:{0}".format(next_dz_api_info))
             return 0
-        app.log(u"==== PLAYER_EVENT ==== {0}".format(PlayerEvent.event_name(event_type)))
+        app.log(u"==== PLAYER_EVENT ==== {0}".format(event_name))
         if event_type == PlayerEvent.QUEUELIST_LOADED:
             app.player.play()
         if event_type == PlayerEvent.QUEUELIST_TRACK_RIGHTS_AFTER_AUDIOADS:
             app.player.play_audio_ads()
+
+        self.dispatch_events(event_name)
+
         return 0
 
     # We set the connection callback to launch the player after connection is established
-    @staticmethod
-    def connection_event_callback(handle, event, userdata):
+    def connection_event_callback(self, handle, event, userdata):
         """Listen to events and call the appropriate functions
         :param handle: The connect handle.
         :type: p_type
@@ -182,8 +194,12 @@ class Jukebox():
         :return: int
         """
         # We retrieve our deezerApp
-        event_type = Connection.get_event(event)
-        app.log(u"++++ CONNECT_EVENT ++++ {0}".format(ConnectionEvent.event_name(event_type)))
+        app = cast(userdata, py_object).value
+        event_name = 'DZ_CONNECT_EVENT_' + ConnectionEvent.event_name(Connection.get_event(event))
+        app.log(u"++++ CONNECT_EVENT ++++ {0}".format(event_name))
+
+        self.dispatch_events(event_name)
+
         return 0
 
     @staticmethod
@@ -208,3 +224,10 @@ class Jukebox():
             app.context.connect_handle = 0
         app.log("Connection deactivated")
         return 0
+
+    def on(self, event, handler):
+        eh = self.event_handlers
+        if event in self.event_handlers:
+            eh[event].append(handler)
+        else:
+            eh[event] = [handler]

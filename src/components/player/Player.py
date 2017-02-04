@@ -5,9 +5,6 @@ from src.components.player.PlayerController import PlayerController
 
 class Player(QtWidgets.QWidget):
 
-    def create_connections(self):
-        pass
-
     @property
     def controller(self):
         return self._controller
@@ -15,8 +12,11 @@ class Player(QtWidgets.QWidget):
     def __init__(self, *args):
         super(Player, self).__init__(*(args[1:]))
         self._controller = PlayerController(args[0])
+        self._context = args[0]
+
         self.setup_ui()
         self.retranslate_ui()
+        self.create_connections()
 
     def setup_ui(self):
         self.setObjectName("Form")
@@ -45,6 +45,9 @@ class Player(QtWidgets.QWidget):
         _translate = QtCore.QCoreApplication.translate
         self.setWindowTitle(_translate("Form", "Form"))
         self.playStopButton.setText(_translate("Form", "Play"))
+
+    def create_connections(self):
+        self._context.deezer.jukebox.on('DZ_PLAYER_EVENT_QUEUELIST_LOADED', self.controller.on_track_content_loaded)
 
 if __name__ == '__main__':
     import sys

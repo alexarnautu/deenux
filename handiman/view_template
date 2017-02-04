@@ -5,9 +5,6 @@ from src.components.{0}.{1}Controller import {1}Controller
 
 class {1}(QtWidgets.QWidget):
 
-    def create_connections(self):
-        pass
-
     @property
     def controller(self):
         return self._controller
