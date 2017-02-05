@@ -1,6 +1,7 @@
 import abc
-from src.deenuxapi.Utils import Utils
+
 from src.deenuxapi.deezer.ResourceManager import ResourceManager
+from src.deenuxapi.deezer.Utils import Utils
 
 
 class Model:

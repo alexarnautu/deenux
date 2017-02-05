@@ -1,12 +1,11 @@
-
-from src.deenuxapi.Provider import Provider
-from src.deenuxapi.deezer.ResourceManager import ResourceManager
-from src.deenuxapi.model.Artist import Artist
-from src.deenuxapi.model.Track import Track
-from src.deenuxapi.model.User import User
-from src.deenuxapi.deezer.Jukebox import Jukebox
-from src.deenuxapi.Utils import Utils
 from urllib.parse import quote
+
+from src.deenuxapi.deezer.Utils import Utils
+from src.deenuxapi.deezer.model.User import User
+
+from src.deenuxapi.deezer.Jukebox import Jukebox
+from src.deenuxapi.deezer.Provider import Provider
+from src.deenuxapi.deezer.ResourceManager import ResourceManager
 
 
 # TODO 1. remove the hardcoded encoding and use the one in the Content-Type header

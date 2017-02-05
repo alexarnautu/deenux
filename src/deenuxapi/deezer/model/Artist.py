@@ -1,4 +1,4 @@
-from src.deenuxapi.Model import Model
+from src.deenuxapi.deezer.Model import Model
 
 
 class Artist(Model):

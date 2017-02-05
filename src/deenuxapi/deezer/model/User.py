@@ -1,8 +1,9 @@
-from src.deenuxapi.Model import Model
+from src.deenuxapi.deezer.Model import Model
+from src.deenuxapi.deezer.Utils import Utils
+from src.deenuxapi.deezer.model.Track import Track
+
 from src.deenuxapi.deezer.ResourceManager import ResourceManager
-from src.deenuxapi.model.Track import Track
-from src.deenuxapi.model.Artist import Artist
-from src.deenuxapi.Utils import Utils
+
 
 class User(Model):
     """
