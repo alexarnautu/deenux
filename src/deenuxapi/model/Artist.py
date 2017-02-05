@@ -1,5 +1,6 @@
 from src.deenuxapi.Model import Model
 
+
 class Artist(Model):
     """
     Contains information about an artist.

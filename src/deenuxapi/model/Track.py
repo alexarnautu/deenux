@@ -1,5 +1,7 @@
 from src.deenuxapi.Model import Model
 from src.deenuxapi.model.Artist import Artist
+from src.deenuxapi.deezer.ResourceManager import ResourceManager
+
 
 class Track(Model):
     """
@@ -18,6 +20,17 @@ class Track(Model):
         self.__title = title
         self.__artist = artist
         self.__duration = duration
+
+    @staticmethod
+    def map(obj):
+        return Track(
+            id=obj['id'],
+            title=obj['title'],
+            artist=Artist(
+                id=obj['artist']['id'],
+                name=obj['artist']['name']
+            )
+        )
 
     """
     Getters and setters.
@@ -46,3 +59,4 @@ class Track(Model):
     @duration.setter
     def duration(self, duration: int):
         self.__duration = duration
+

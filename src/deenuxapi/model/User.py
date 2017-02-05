@@ -1,4 +1,8 @@
 from src.deenuxapi.Model import Model
+from src.deenuxapi.deezer.ResourceManager import ResourceManager
+from src.deenuxapi.model.Track import Track
+from src.deenuxapi.model.Artist import Artist
+from src.deenuxapi.Utils import Utils
 
 class User(Model):
     """
@@ -20,6 +24,44 @@ class User(Model):
         self.__firstname = firstname
         self.__lastname = lastname
         self.__email = email
+
+    @staticmethod
+    def map(obj):
+        return User(
+            id=obj['id'],
+            username=obj['name'],
+            firstname=obj['firstname'],
+            lastname=obj['lastname'],
+            email=obj['email']
+        )
+
+    def get_favourite_tracks(self, skip: int = 0, take: int = 25) -> list:
+        """
+        Gets a list of user's favourite tracks
+        Supports pagination parameters
+        :param skip: Pagination param (.NET's LINQ-like, also self-explainatory)
+        :param take: Like above
+        :return: List of trakcs
+        """
+        data = Utils.request('GET', ResourceManager.get_endpoint('user_favs', self.id, {
+            'index': skip,
+            'limit': take
+        })) # TODO 2
+
+        return list(map(Track.map, data['data']))
+
+    @staticmethod
+    def get_from_token(token: str):
+        """
+        Gets the User of the authentication token
+        :param token: The access token
+        :return: A User record
+        """
+        data = Utils.request('GET', ResourceManager.get_endpoint('user', 'me', {
+            'access_token': token
+        })) # TODO 2
+
+        return User.map(data)
 
     """
     Getters and setters.
