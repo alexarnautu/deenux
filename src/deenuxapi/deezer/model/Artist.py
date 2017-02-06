@@ -15,6 +15,9 @@ class Artist(Model):
         super().__init__(id)
         self.__name = name
 
+    def __str__(self):
+        return self.__name
+
     """
     Getters and setters.
     """
