@@ -32,6 +32,9 @@ class Track(Model):
             )
         )
 
+    def __str__(self):
+        return '{} - {}'.format(self.__artist.name, self.__title)
+
     """
     Getters and setters.
     """

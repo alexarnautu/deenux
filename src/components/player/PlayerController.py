@@ -10,4 +10,4 @@ class PlayerController:
         return self._context
 
     def on_track_content_loaded(self, sender, content_url, is_playing, active):
-        print(self._context.deezer.get_entity_from_dz_url(content_url))
+        now_playing = self._context.deezer.get_entity_from_dz_url(content_url)
