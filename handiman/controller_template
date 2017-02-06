@@ -6,5 +6,10 @@ class {0}Controller:
     def context(self):
         return self._context
 
-    def __init__(self, context):
+    @property
+    def view(self):
+        return self._view
+
+    def __init__(self, view, context):
         self._context = context
+        self._view = view

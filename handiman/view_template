@@ -11,7 +11,7 @@ class {1}(QtWidgets.QWidget):
 
     def __init__(self, *args):
         super({1}, self).__init__(*(args[1:]))
-        self._controller = {1}Controller(args[0])
+        self._controller = {1}Controller(self, args[0])
 
         self.setup_ui()
         self.retranslate_ui()
