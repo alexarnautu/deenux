@@ -26,6 +26,7 @@ class Track(Model):
         return Track(
             id=obj['id'],
             title=obj['title'],
+            duration=obj['duration'],
             artist=Artist(
                 id=obj['artist']['id'],
                 name=obj['artist']['name']

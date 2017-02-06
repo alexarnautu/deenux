@@ -3,6 +3,7 @@ from src.AppContext import AppContext
 from src.deenuxapi.deezer.DeezerProvider import DeezerProvider
 from src.components.player.Player import Player
 from src.components.songlist.Songlist import Songlist
+import asyncio
 import sys
 
 class Application:
@@ -21,11 +22,14 @@ class Application:
 
     def init_context(self):
         self.context = AppContext (
-            deezer = DeezerProvider(DeezerProvider.authorize())
+            deezer = DeezerProvider(DeezerProvider.authorize()),
+            event_loop = asyncio.get_event_loop()
         )
 
     def setup_ui(self):
         self._main_window = window = QtWidgets.QWidget()
+        self.context.hook(main_window = window)
+
         main_layout = QtWidgets.QVBoxLayout()
         center_layout = QtWidgets.QHBoxLayout()
 

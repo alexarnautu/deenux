@@ -12,7 +12,7 @@ class Songlist(QtWidgets.QWidget):
 
     def __init__(self, *args):
         super(Songlist, self).__init__(*(args[1:]))
-        self._controller = SonglistController(args[0])
+        self._controller = SonglistController(self, args[0])
 
         self.setup_ui()
         self.retranslate_ui()

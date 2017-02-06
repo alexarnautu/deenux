@@ -2,9 +2,14 @@
 
 class SonglistController:
 
-    def __init__(self, context):
+    def __init__(self, view, context):
         self._context = context
+        self._view = view
     
+    @property
+    def view(self):
+        return self._view
+
     @property
     def context(self):
         return self._context

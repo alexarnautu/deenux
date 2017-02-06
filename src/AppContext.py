@@ -6,6 +6,8 @@ class AppContext:
     """
 
     def __init__(self, **kwargs):
+        self.hook(**kwargs)
+
+    def hook(self, **kwargs):
         for k in kwargs:
             setattr(self, k, kwargs[k])
-
