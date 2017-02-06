@@ -6,9 +6,6 @@ from src.components.songlist.SonglistModel import SonglistModel
 
 class Songlist(QtWidgets.QWidget):
 
-    def create_connections(self):
-        pass
-
     @property
     def controller(self):
         return self._controller
@@ -24,7 +21,7 @@ class Songlist(QtWidgets.QWidget):
     def setup_ui(self):
         self.horizontal_layout = QtWidgets.QHBoxLayout(self)
         self.songlist_table = QtWidgets.QTableView()
-        self.songlist_model = SonglistModel(self.controller.context.deezer_service.get_favourite_tracks(0, 50000), ["Title", "Artist"])
+        self.songlist_model = SonglistModel(self.controller.context.deezer.me.get_favourite_tracks(0, 50000), ["Title", "Artist"])
         self.songlist_table.setModel(self.songlist_model)
 
         self.songlist_table.setColumnWidth(0, self.width() // 3)

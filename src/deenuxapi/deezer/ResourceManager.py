@@ -31,7 +31,7 @@ class ResourceManager:
         return ResourceManager.__settings['app'][setting];
 
     @staticmethod
-    def get_endpoint(name: str, ids: any, params: dict):
+    def get_endpoint(name: str, ids: any, params: dict = None):
         """
         Gets endpoint url tip.
         :param name: Name of the endpoint, specified in the resource
