@@ -4,7 +4,6 @@ from src.deenuxapi.deezer.ResourceManager import ResourceManager
 
 class Utils:
 
-    _api_conn = http.client.HTTPSConnection(ResourceManager.API)
 
     @staticmethod
     def request(method: str, url: str) -> dict:
@@ -14,5 +13,6 @@ class Utils:
         :param url: The tip of the url
         :return: Returns json parsed response data as a dictionary
         """
-        Utils._api_conn.request(method, url)
-        return json.loads(Utils._api_conn.getresponse().read().decode('utf8')) # TODO 1
+        api_conn = http.client.HTTPSConnection(ResourceManager.API)
+        api_conn.request(method, url)
+        return json.loads(api_conn.getresponse().read().decode('utf8')) # TODO 1

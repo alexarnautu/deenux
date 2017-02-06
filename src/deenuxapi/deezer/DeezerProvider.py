@@ -3,6 +3,10 @@ from urllib.parse import quote
 from src.deenuxapi.deezer.Utils import Utils
 from src.deenuxapi.deezer.model.User import User
 
+from src.deenuxapi.deezer.model.Track import Track
+from src.deenuxapi.deezer.model.Artist import Artist
+
+
 from src.deenuxapi.deezer.Jukebox import Jukebox
 from src.deenuxapi.deezer.Provider import Provider
 from src.deenuxapi.deezer.ResourceManager import ResourceManager
@@ -75,9 +79,12 @@ class DeezerProvider(Provider):
 
         return data['access_token']
 
-    def get_playlists(self):
-        pass
-
-    def get_favourite_artists(self):
-        pass
+    @staticmethod
+    def get_entity_from_dz_url(url: str):
+        """
+        """
+        splitted = url.split('/')
+        id = splitted[-1]
+        model_name = splitted[-2].capitalize()
+        return globals()[model_name].get(id)
 
