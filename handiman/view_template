@@ -9,9 +9,9 @@ class {1}(QtWidgets.QWidget):
     def controller(self):
         return self._controller
 
-    def __init__(self, *args):
-        super({1}, self).__init__(*(args[1:]))
-        self._controller = {1}Controller(self, args[0])
+    def __init__(self, context, *args):
+        super({1}, self).__init__(*args)
+        self._controller = {1}Controller(self, context)
 
         self.setup_ui()
         self.retranslate_ui()

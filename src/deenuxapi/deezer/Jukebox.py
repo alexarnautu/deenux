@@ -177,7 +177,7 @@ class Jukebox:
         plr = self.player
         if event_name in self.event_handlers:
             for handler in self.event_handlers[event_name]:
-                handler(self, plr.current_content.decode('ascii'), plr.is_playing, plr.active, event_name)
+                handler(event_name, self, plr.current_content.decode('ascii'), plr.is_playing, plr.active)
 
         return 0
 

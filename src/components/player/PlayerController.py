@@ -1,6 +1,5 @@
 from PyQt5.QtCore import QTimer
 from time import sleep
-import asyncio
 from threading import Thread
 
 class PlayerController:
@@ -28,7 +27,7 @@ class PlayerController:
         pb.setValue(0)
         pb.setFormat(str(self.now_playing))
 
-    def on_track_play_start(self, sender, content_url, is_playing, active):
+    def on_track_play_start(self, *args):
         self.update_progress_bar()
         self.__pbar_timer.start()
 

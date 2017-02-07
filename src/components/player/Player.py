@@ -9,10 +9,10 @@ class Player(QtWidgets.QWidget):
     def controller(self):
         return self._controller
 
-    def __init__(self, *args):
-        super(Player, self).__init__(*(args[1:]))
-        self._controller = PlayerController(self, args[0])
-        self._context = args[0]
+    def __init__(self, context, *args):
+        super(Player, self).__init__(*args)
+        self._controller = PlayerController(self, context)
+        self._context = context
 
         self.setup_ui()
         self.retranslate_ui()
@@ -43,8 +43,9 @@ class Player(QtWidgets.QWidget):
         self.playStopButton.setText(_translate("Form", "Play"))
 
     def create_connections(self):
-        self._context.app.DZ_PLAYER_EVENT_QUEUELIST_LOADED.connect(self.controller.on_track_content_loaded)
-        self._context.app.DZ_PLAYER_EVENT_RENDER_TRACK_START.connect(self.controller.on_track_play_start)
+        app = self._context.app
+        app.DZ_PLAYER_EVENT_QUEUELIST_LOADED.connect(self.controller.on_track_content_loaded)
+        app.DZ_PLAYER_EVENT_RENDER_TRACK_START.connect(self.controller.on_track_play_start)
 
 if __name__ == '__main__':
     import sys
