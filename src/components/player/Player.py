@@ -43,7 +43,8 @@ class Player(QtWidgets.QWidget):
         self.playStopButton.setText(_translate("Form", "Play"))
 
     def create_connections(self):
-        self._context.deezer.jukebox.on('DZ_PLAYER_EVENT_QUEUELIST_LOADED', self.controller.on_track_content_loaded)
+        self._context.app.DZ_PLAYER_EVENT_QUEUELIST_LOADED.connect(self.controller.on_track_content_loaded)
+        self._context.app.DZ_PLAYER_EVENT_RENDER_TRACK_START.connect(self.controller.on_track_play_start)
 
 if __name__ == '__main__':
     import sys

@@ -35,6 +35,7 @@ class Songlist(QtWidgets.QWidget):
     def create_connections(self):
         self.songlist_table.doubleClicked.connect(self.controller.on_line_double_click)
 
+
 if __name__ == '__main__':
     import sys
     app = QtWidgets.QApplication(sys.argv)
