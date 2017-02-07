@@ -1,14 +1,23 @@
 from PyQt5 import QtWidgets
+from PyQt5.QtCore import pyqtSignal, QObject
 from src.AppContext import AppContext
 from src.deenuxapi.deezer.DeezerProvider import DeezerProvider
 from src.components.player.Player import Player
 from src.components.songlist.Songlist import Songlist
-import asyncio
 import sys
 
-class Application:
 
-    def __init__(self):
+class Application(QObject):
+
+    """ You have to add static pyqtSignals MANUALLY
+        You won't be able to connect them if you add them dynamically with setattr
+        When you need a jukebox event, just add them here as a signal
+    """
+    DZ_PLAYER_EVENT_QUEUELIST_LOADED = pyqtSignal(object, str, bool, bool, name='DZ_PLAYER_EVENT_QUEUELIST_LOADED')
+    DZ_PLAYER_EVENT_RENDER_TRACK_START = pyqtSignal(object, str, bool, bool, name='DZ_PLAYER_EVENT_RENDER_TRACK_START')
+
+    def __init__(self, *args):
+        super().__init__(*args)
         self.init_context()
 
     def launch (self):
@@ -16,14 +25,25 @@ class Application:
         app = QtWidgets.QApplication(sys.argv)
         self.setup_ui()
         self.create_connections()
+        self.connect_wrapper_events()
 
         self._main_window.show()
         sys.exit(app.exec_())
 
+    def connect_wrapper_events(self):
+        jb = self.context.deezer.jukebox
+
+        # Connecting player events
+        for ev_name in filter(lambda a : a.startswith('DZ_'), Application.__dict__.keys()):
+            jb.on(ev_name, self.emit_wrapper_signal)
+
+    def emit_wrapper_signal(self, sender, dz_url, is_playing, active, event_name):
+        getattr(self, event_name).emit(sender, dz_url, is_playing, active)
+
     def init_context(self):
         self.context = AppContext (
             deezer = DeezerProvider(DeezerProvider.authorize()),
-            event_loop = asyncio.get_event_loop()
+            app = self
         )
 
     def setup_ui(self):
@@ -43,6 +63,6 @@ class Application:
 
         window.setLayout(main_layout)
 
-
     def create_connections(self):
         pass
+

@@ -3,10 +3,7 @@
 from src.deenuxapi.deezer.Model import Model
 from src.deenuxapi.deezer.ResourceManager import ResourceManager
 from src.deenuxapi.deezer.wrapper.deezer_player import *
-
-
-# TODO: clear debugging code and logs
-
+import sys
 
 class Jukebox:
     """
@@ -27,8 +24,13 @@ class Jukebox:
             self.connect_handle = 0
             self.player_handle = 0
 
-    def __init__(self, token: str, debug_mode=True):
-        self.debug_mode = debug_mode
+    def __init__(self, token: str):
+        
+        try:
+            sys.argv.index('debug')
+            self.debug_mode = True
+        except ValueError:
+            self.debug_mode = False
 
         user_cache_path = ResourceManager.get_app_setting('cache_path_' + platform.system().lower())
         self.context = self.AppContext()
@@ -175,7 +177,7 @@ class Jukebox:
         plr = self.player
         if event_name in self.event_handlers:
             for handler in self.event_handlers[event_name]:
-                handler(self, plr.current_content.decode('ascii'), plr.is_playing, plr.active)
+                handler(self, plr.current_content.decode('ascii'), plr.is_playing, plr.active, event_name)
 
         return 0
 
@@ -198,7 +200,7 @@ class Jukebox:
 
         if event_name in self.event_handlers:
             for handler in self.event_handlers[event_name]:
-                handler(self)
+                handler(self, event_name)
 
         return 0
 
