@@ -9,9 +9,14 @@ class Toolbar(QtWidgets.QWidget):
     def controller(self):
         return self._controller
 
+    @property
+    def context(self):
+        return self._context
+
     def __init__(self, context, *args):
         super(Toolbar, self).__init__(*args)
         self._controller = ToolbarController(self, context)
+        self._context = context
 
         self.setup_ui()
         self.retranslate_ui()

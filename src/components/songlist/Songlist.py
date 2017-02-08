@@ -10,10 +10,14 @@ class Songlist(QtWidgets.QWidget):
     def controller(self):
         return self._controller
 
-    def __init__(self, *args):
-        super(Songlist, self).__init__(*(args[1:]))
-        self._controller = SonglistController(self, args[0])
+    @property
+    def context(self):
+        return self.context
 
+    def __init__(self, context, *args):
+        super(Songlist, self).__init__(*args)
+        self._controller = SonglistController(self, context)
+        self._context = context
         self.setup_ui()
         self.retranslate_ui()
         self.create_connections()
