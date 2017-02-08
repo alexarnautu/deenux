@@ -4,6 +4,8 @@ from src.AppContext import AppContext
 from src.deenuxapi.deezer.DeezerProvider import DeezerProvider
 from src.components.player.Player import Player
 from src.components.songlist.Songlist import Songlist
+from src.components.sidemenu.Sidemenu import Sidemenu
+from src.components.toolbar.Toolbar import Toolbar
 import sys
 
 
@@ -54,11 +56,16 @@ class Application(QObject):
         center_layout = QtWidgets.QHBoxLayout()
 
         self.player = Player(self.context)
+        self.sidemenu = Sidemenu(self.context)
+        self.toolbar = Toolbar(self.context)
 
+        main_layout.addWidget(self.toolbar)
         main_layout.addLayout(center_layout)
         main_layout.addWidget(self.player)
 
         self.songlist = Songlist(self.context)
+
+        center_layout.addWidget(self.sidemenu)
         center_layout.addWidget(self.songlist)
 
         window.setLayout(main_layout)
