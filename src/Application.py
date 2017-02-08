@@ -36,7 +36,7 @@ class Application(QObject):
         jb = self.context.deezer.jukebox
 
         # Connecting player events
-        for ev_name in filter(lambda a : a.startswith('DZ_'), Application.__dict__.keys()):
+        for ev_name in filter(lambda a : a.startswith('DZ_'), vars(Application).keys()):
             jb.on(ev_name, self.emit_wrapper_signal)
 
     def emit_wrapper_signal(self, event_name, *event_args):
@@ -58,12 +58,11 @@ class Application(QObject):
         self.player = Player(self.context)
         self.sidemenu = Sidemenu(self.context)
         self.toolbar = Toolbar(self.context)
+        self.songlist = Songlist(self.context)
 
         main_layout.addWidget(self.toolbar)
         main_layout.addLayout(center_layout)
         main_layout.addWidget(self.player)
-
-        self.songlist = Songlist(self.context)
 
         center_layout.addWidget(self.sidemenu)
         center_layout.addWidget(self.songlist)
@@ -72,4 +71,3 @@ class Application(QObject):
 
     def create_connections(self):
         pass
-

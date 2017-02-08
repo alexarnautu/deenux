@@ -44,10 +44,13 @@ class User(Model):
         :param take: Like above
         :return: List of trakcs
         """
-        data = Utils.request('GET', ResourceManager.get_endpoint('user_favs', self.id, {
-            'index': skip,
-            'limit': take
-        })) # TODO 2
+        data = Utils.request('GET', ResourceManager.get_endpoint(
+            ('user', self.id, 'tracks'), 
+            {
+                'index': skip,
+                'limit': take
+            }
+        ))
 
         return list(map(Track.map, data['data']))
 
@@ -58,9 +61,9 @@ class User(Model):
         :param token: The access token
         :return: A User record
         """
-        data = Utils.request('GET', ResourceManager.get_endpoint('user', 'me', {
+        data = Utils.request('GET', ResourceManager.get_endpoint(('user', 'me'), {
             'access_token': token
-        })) # TODO 2
+        }))
 
         return User.map(data)
 

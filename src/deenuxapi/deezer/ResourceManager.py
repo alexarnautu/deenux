@@ -16,7 +16,6 @@ class ResourceManager:
         ResourceManager.__settings = json.loads(
             open(os.path.realpath(os.path.dirname(__file__)) + '/resources/DeezerApi.json').read()
         )
-        ResourceManager.__endpoint_tpl = ResourceManager.__settings['endpoints']
 
         url_prefix = ResourceManager.__settings['hostname'] + ':' + ResourceManager.__settings['port']
         ResourceManager.API = url_prefix
@@ -31,7 +30,7 @@ class ResourceManager:
         return ResourceManager.__settings['app'][setting];
 
     @staticmethod
-    def get_endpoint(name: str, ids: any, params: dict = None):
+    def get_endpoint(path, params: dict = None):
         """
         Gets endpoint url tip.
         :param name: Name of the endpoint, specified in the resource
@@ -39,10 +38,10 @@ class ResourceManager:
         :param params: Additional query params, as a dictionary
         :return: The built url tip
         """
-        if type(ids) is list:
-            url = ResourceManager.__endpoint_tpl[name].format(*ids)
-        else:
-            url = ResourceManager.__endpoint_tpl[name].format(ids)
+
+        url = '/'.join(str(x) for x in path)\
+              if (type(path) is list or type(path) is tuple)\
+              else path
         if params:
             url += ('&' if '?' in url else '?') + urlencode(params)
         return '/' + url

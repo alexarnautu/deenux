@@ -45,7 +45,7 @@ class Model:
         model = cls.map(
             Utils.request(
                 'GET',
-                ResourceManager.get_endpoint(endpoint, id, params)
+                ResourceManager.get_endpoint((endpoint, id), params)
             )
         )
         Model.basic_cache[endpoint][id] = model
