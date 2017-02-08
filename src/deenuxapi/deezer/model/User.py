@@ -1,5 +1,5 @@
 from src.deenuxapi.deezer.Model import Model
-from src.deenuxapi.deezer.Utils import Utils
+from src.deenuxapi.deezer.Request import Request
 from src.deenuxapi.deezer.model.Track import Track
 
 from src.deenuxapi.deezer.ResourceManager import ResourceManager
@@ -11,7 +11,7 @@ class User(Model):
     """
 
     def __init__(self, id: int, username: str, firstname: str, lastname: str,
-            email: str):
+                 email: str):
         """
         Constructor of User.
         :param id: user's ID
@@ -44,13 +44,12 @@ class User(Model):
         :param take: Like above
         :return: List of trakcs
         """
-        data = Utils.request('GET', ResourceManager.get_endpoint(
-            ('user', self.id, 'tracks'), 
-            {
-                'index': skip,
-                'limit': take
-            }
-        ))
+        params = {
+            'index': skip,
+            'limit': take
+        }
+
+        data = Request.get(ResourceManager.get_endpoint(('user', self.id, 'tracks')), params)
 
         return list(map(Track.map, data['data']))
 
@@ -61,9 +60,7 @@ class User(Model):
         :param token: The access token
         :return: A User record
         """
-        data = Utils.request('GET', ResourceManager.get_endpoint(('user', 'me'), {
-            'access_token': token
-        }))
+        data = Request.get(ResourceManager.get_endpoint(('user', 'me')))
 
         return User.map(data)
 

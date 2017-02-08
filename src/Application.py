@@ -48,6 +48,7 @@ class Application(QObject):
             app = self
         )
 
+
     def setup_ui(self):
         self._main_window = window = QtWidgets.QWidget()
         self.context.hook(main_window = window)
