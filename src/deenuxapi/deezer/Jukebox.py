@@ -5,6 +5,7 @@ from src.deenuxapi.deezer.ResourceManager import ResourceManager
 from src.deenuxapi.deezer.wrapper.deezer_player import *
 import sys
 
+
 class Jukebox:
     """
     A simple deezer application using NativeSDK

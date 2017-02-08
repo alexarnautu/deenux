@@ -1,7 +1,7 @@
 import abc
 
 from src.deenuxapi.deezer.ResourceManager import ResourceManager
-from src.deenuxapi.deezer.Utils import Utils
+from src.deenuxapi.deezer.Request import Request
 
 
 class Model:
@@ -29,7 +29,7 @@ class Model:
         self.__id = id
 
     @classmethod
-    def get(cls, id, params: dict = None):
+    def get(cls, id, params: dict = {}):
         """
         Gets instance of a record, by calling the Api using the static endpoint
         :param id: Id of the instance
@@ -43,10 +43,8 @@ class Model:
             return Model.basic_cache[endpoint][id]
 
         model = cls.map(
-            Utils.request(
-                'GET',
-                ResourceManager.get_endpoint((endpoint, id), params)
-            )
+            Request.get(
+                ResourceManager.get_endpoint((endpoint, id)), params)
         )
         Model.basic_cache[endpoint][id] = model
         return model
@@ -62,4 +60,3 @@ class Model:
     @id.setter
     def id(self, id: int):
         self.__id = id
-

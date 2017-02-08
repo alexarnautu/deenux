@@ -17,7 +17,7 @@ class ResourceManager:
             open(os.path.realpath(os.path.dirname(__file__)) + '/resources/DeezerApi.json').read()
         )
 
-        url_prefix = ResourceManager.__settings['hostname'] + ':' + ResourceManager.__settings['port']
+        url_prefix = ResourceManager.__settings['scheme'] + '://' + ResourceManager.__settings['hostname']
         ResourceManager.API = url_prefix
 
     @staticmethod
@@ -44,6 +44,6 @@ class ResourceManager:
               else path
         if params:
             url += ('&' if '?' in url else '?') + urlencode(params)
-        return '/' + url
+        return ResourceManager.API + '/' + url
 
 ResourceManager.load()
