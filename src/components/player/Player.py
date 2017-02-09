@@ -22,6 +22,7 @@ class Player(QtWidgets.QWidget):
         self.retranslate_ui()
         self.create_connections()
         self.context.player = self
+        self.active = False
 
     def setup_ui(self):
         self.setMinimumSize(QtCore.QSize(790, 45))

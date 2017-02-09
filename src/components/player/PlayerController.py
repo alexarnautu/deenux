@@ -33,7 +33,7 @@ class PlayerController:
         self.__pbar_timer.start()
 
     def update_progress_bar(self):
-        pb_v = self.view.progress_bar.value()        
+        pb_v = self.view.progress_bar.value()
         self.view.progress_bar.setValue(pb_v + 1)
         if (pb_v == self.now_playing.duration):
             self.__pbar_timer.stop()
@@ -47,7 +47,12 @@ class PlayerController:
         self.__pbar_timer.start()
 
     def on_play_pause_click(self):
-        self.context.deezer.jukebox.toggle_play_pause()
+        jb = self.context.deezer.jukebox
+        if not self.view.active:
+            jb.start(self.view.to_play)
+            self.view.active = True
+            return
+        jb.toggle_play_pause()
         
 
         
