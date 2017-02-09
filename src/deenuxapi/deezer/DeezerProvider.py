@@ -63,8 +63,7 @@ class DeezerProvider(Provider):
 
         oauth_url = ResourceManager.get_app_setting("oauth_url").format(
             ResourceManager.get_app_setting('id'),  # The application Id
-            quote("http://localhost:{0}".format(httpd.server_port), safe=''),
-            # Redirection URL (to our dear local server, of course)
+            quote("http://localhost:{0}".format(httpd.server_port), safe=''), # Redirection URL (to our dear local server, of course)
             ','.join(ResourceManager.get_app_setting('perms'))  # Permissions
         )
         webbrowser.open(oauth_url)

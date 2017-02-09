@@ -1,7 +1,6 @@
 import http.client
 import requests
 import json
-from src.constants import HTTP_METHOD
 from src.deenuxapi.deezer.ResourceManager import ResourceManager
 
 

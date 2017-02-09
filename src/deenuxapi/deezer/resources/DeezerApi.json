@@ -1,0 +1,20 @@
+{
+
+  "scheme": "https",
+  "hostname": "api.deezer.com",
+  "port": "443",
+
+  "app": {
+    "id": "218964",
+    "name": "Deenux",
+    "version": "0.1",
+    "oauth_url": "https://connect.deezer.com/oauth/auth.php?app_id={0}&redirect_uri={1}&perms={2}",
+    "token_url": "https://arni.ro/deenux-server/index.php?code={}",
+
+    "perms": ["basic_access", "offline_access", "manage_library", "delete_library"],
+
+    "cache_path_linux": "/var/tmp/deenuxcache",
+    "cache_path_windows": ""
+  }
+
+}
