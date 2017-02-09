@@ -90,7 +90,7 @@ class Jukebox:
     def toggle_play_pause(self):
         if self.player.is_playing:
             self.log("PAUSE track n° {} of => {}".format(self.context.nb_track_played, self.context.dz_content_url))
-            self.player.pause()
+            self.player.pause(activity_operation_cb=self.player_cb)
         else:
             self.log("RESUME track n° {} of => {}".format(self.context.nb_track_played, self.context.dz_content_url))
             self.player.resume()
@@ -148,8 +148,9 @@ class Jukebox:
         :type: ctypes.py_object
         :return: int
         """
+
         # We retrieve our deezer app
-        app = cast(userdata, py_object).value
+        app = self
         event_type = Player.get_event(event)
         event_name = 'DZ_PLAYER_EVENT_' + PlayerEvent.event_name(event_type)
         if event_type == PlayerEvent.QUEUELIST_TRACK_SELECTED:
