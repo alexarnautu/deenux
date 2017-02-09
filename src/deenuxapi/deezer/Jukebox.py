@@ -90,7 +90,16 @@ class Jukebox:
     def toggle_play_pause(self):
         if self.player.is_playing:
             self.log("PAUSE track n° {} of => {}".format(self.context.nb_track_played, self.context.dz_content_url))
-            self.player.pause(activity_operation_cb=self.player_cb)
+            self.player.pause()
+            
+            # Huge workaround, because the native sdk doesn't fire the DZ_PLAYER_EVENT_RENDER_TRACK_PAUSED event
+            # So we have to fire it manually
+            plr = self.player
+            event_name = 'DZ_PLAYER_EVENT_RENDER_TRACK_PAUSED'
+            if event_name in self.event_handlers:
+                for handler in self.event_handlers[event_name]:
+                    handler(event_name, self, plr.current_content.decode('ascii'), plr.is_playing, plr.active)
+            
         else:
             self.log("RESUME track n° {} of => {}".format(self.context.nb_track_played, self.context.dz_content_url))
             self.player.resume()
