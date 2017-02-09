@@ -46,6 +46,8 @@ class Player(QtWidgets.QWidget):
 
         self.volume_slider = QtWidgets.QSlider(self)
         self.volume_slider.setOrientation(QtCore.Qt.Horizontal)
+        self.volume_slider.setMaximum(15)
+
         self.h_layout.addWidget(self.volume_slider)
         self.progress_bar = QtWidgets.QProgressBar(self)
         self.progress_bar.setAlignment(QtCore.Qt.AlignJustify|QtCore.Qt.AlignTop)

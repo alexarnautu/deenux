@@ -62,8 +62,7 @@ class PlayerController:
         self.view.play_pause_button.setText('▶')
 
     def on_volume_change(self, val):
-
         was_blocked = self.view.volume_slider.blockSignals(True)
-        self.context.deezer.jukebox.set_volume(val // 3)
+        self.context.deezer.jukebox.set_volume(val * 2)
         self.view.volume_slider.blockSignals(was_blocked)
 
