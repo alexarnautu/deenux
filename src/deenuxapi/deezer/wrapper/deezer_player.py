@@ -292,6 +292,13 @@ class Player:
         if libdeezer.dz_player_set_repeat_mode(self.handle, cb, context, repeat_mode):
             raise PlayerRequestFailedError(u"play: Unable to set repeat mode. Check player commands and info.")
 
+    def set_output_volume(self, activity_operation_cb=None, operation_user_data=None, percentage=100):
+        context = py_object(operation_user_data) if operation_user_data else c_void_p(0)
+        cb = activity_operation_cb if activity_operation_cb else c_void_p(0)
+        percentage = c_int(percentage)
+        if libdeezer.dz_player_set_output_volume(self.handle, cb, context, percentage):
+            raise PlayerRequestFailedError('set_output_volume: Unable to set output volume')
+
     def enable_shuffle_mode(self, shuffle_mode, activity_operation_cb=None, operation_user_data=None):
         """Set the shuffle mode of the player (randomize track selection)
             :param shuffle_mode: Set to true to activate the random track

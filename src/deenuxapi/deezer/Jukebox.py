@@ -145,6 +145,9 @@ class Jukebox:
             self.connection.shutdown(activity_operation_cb=self.dz_connect_deactivate_cb,
                                      operation_user_data=self)
 
+    def set_volume(self, percentage):
+        self.player.set_output_volume(percentage=percentage)
+
     # We set the callback for player events, to print various logs and listen to events
     def player_event_callback(self, handle, event, userdata):
         """Listen to events and call the appropriate functions

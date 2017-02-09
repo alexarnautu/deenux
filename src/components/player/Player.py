@@ -44,9 +44,9 @@ class Player(QtWidgets.QWidget):
         self.h_layout.addWidget(self.play_pause_button)
         self.h_layout.addWidget(self.next_button)
 
-        self.h_slider = QtWidgets.QSlider(self)
-        self.h_slider.setOrientation(QtCore.Qt.Horizontal)
-        self.h_layout.addWidget(self.h_slider)
+        self.volume_slider = QtWidgets.QSlider(self)
+        self.volume_slider.setOrientation(QtCore.Qt.Horizontal)
+        self.h_layout.addWidget(self.volume_slider)
         self.progress_bar = QtWidgets.QProgressBar(self)
         self.progress_bar.setAlignment(QtCore.Qt.AlignJustify|QtCore.Qt.AlignTop)
         self.h_layout.addWidget(self.progress_bar)
@@ -66,6 +66,9 @@ class Player(QtWidgets.QWidget):
         app.DZ_PLAYER_EVENT_RENDER_TRACK_PAUSED.connect(self.controller.on_track_pause)
         app.DZ_PLAYER_EVENT_LIMITATION_FORCED_PAUSE.connect(self.controller.on_track_pause)
         app.DZ_PLAYER_EVENT_RENDER_TRACK_RESUMED.connect(self.controller.on_track_resume)
+        app.DZ_PLAYER_EVENT_RENDER_TRACK_END.connect(self.controller.on_track_stop)
+
+        self.volume_slider.valueChanged.connect(self.controller.on_volume_change)
         self.play_pause_button.clicked.connect(self.controller.on_play_pause_click)
 
 if __name__ == '__main__':

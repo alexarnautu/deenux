@@ -61,7 +61,6 @@ class User(Model):
         :return: A User record
         """
         data = Request.get(ResourceManager.get_endpoint(('user', 'me')))
-
         return User.map(data)
 
     """

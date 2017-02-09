@@ -17,10 +17,11 @@ class Application(QObject):
     """
     DZ_PLAYER_EVENT_QUEUELIST_LOADED = pyqtSignal(object, str, bool, bool, name='DZ_PLAYER_EVENT_QUEUELIST_LOADED')
     DZ_PLAYER_EVENT_RENDER_TRACK_START = pyqtSignal(object, str, bool, bool, name='DZ_PLAYER_EVENT_RENDER_TRACK_START')
-    DZ_PLAYER_EVENT_LIMITATION_FORCED_PAUSE = pyqtSignal(object, str, bool, bool, name='DZ_PLAYER_EVENT_LIMITATION_FORCED_PAUSE')
     DZ_PLAYER_EVENT_RENDER_TRACK_PAUSED = pyqtSignal(object, str, bool, bool, name='DZ_PLAYER_EVENT_RENDER_TRACK_PAUSED')
     DZ_PLAYER_EVENT_RENDER_TRACK_RESUMED = pyqtSignal(object, str, bool, bool, name='DZ_PLAYER_EVENT_RENDER_TRACK_RESUMED')
-
+    DZ_PLAYER_EVENT_RENDER_TRACK_END = pyqtSignal(object, str, bool, bool, name='DZ_PLAYER_EVENT_RENDER_TRACK_END')
+    DZ_PLAYER_EVENT_LIMITATION_FORCED_PAUSE = pyqtSignal(object, str, bool, bool, name='DZ_PLAYER_EVENT_LIMITATION_FORCED_PAUSE')
+    
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.init_context()
