@@ -29,6 +29,7 @@ class PlayerController:
 
     def on_track_play_start(self, *args):
         self.update_progress_bar()
+        self.view.play_pause_button.setText('▮▮')
         self.__pbar_timer.start()
 
     def update_progress_bar(self):
@@ -36,3 +37,17 @@ class PlayerController:
         self.view.progress_bar.setValue(pb_v + 1)
         if (pb_v == self.now_playing.duration):
             self.__pbar_timer.stop()
+
+    def on_track_pause(self):
+        self.view.play_pause_button.setText('▶')
+        self.__pbar_timer.stop()
+
+    def on_track_resume(self):
+        self.view.play_pause_button.setText('▮▮')
+        self.__pbar_timer.start()
+
+    def on_play_pause_click(self):
+        self.context.deezer.jukebox.toggle_play_pause()
+        
+
+        
