@@ -65,14 +65,17 @@ class PlayerController:
 
     def on_volume_change(self, val):
         was_blocked = self.view.volume_slider.blockSignals(True)
-        self.context.deezer.jukebox.set_volume(val * 2)
+        self.context.deezer.jukebox.set_volume(val * 5)
         self.view.volume_slider.blockSignals(was_blocked)
 
     def on_progress_bar_pressed(self):
         pass
 
     def on_progress_bar_released(self):
-        sec = self.view.progress_bar.value() // 10
+        val = self.view.progress_bar.value()
+        if val == self.now_playing.duration * 10:
+            val -= 1
+        sec = val // 10
         self.context.deezer.jukebox.seek(sec)
         self.view.progress_bar.setValue(sec * 10)
 
