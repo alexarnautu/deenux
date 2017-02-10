@@ -49,7 +49,8 @@ class Application(QObject):
     def init_context(self):
         self.context = AppContext (
             deezer = DeezerProvider(DeezerProvider.authorize()),
-            app = self
+            app = self,
+            mix = []
         )
 
 

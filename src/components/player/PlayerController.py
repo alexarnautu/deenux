@@ -61,6 +61,8 @@ class PlayerController:
         self.view.active = False
         self.view.play_pause_button.setText('▶')
 
+        self.on_next_clicked()
+
     def on_volume_change(self, val):
         was_blocked = self.view.volume_slider.blockSignals(True)
         self.context.deezer.jukebox.set_volume(val * 2)
@@ -74,3 +76,21 @@ class PlayerController:
 
     def on_progress_bar_value_changed(self):
         pass
+
+    @staticmethod
+    def _get_from_mix(playing, mix, direction):
+        return mix[mix.index(playing) + (1 if direction else -1)] # for now
+
+    def on_next_clicked(self):
+        self.context.deezer.jukebox.start(self._get_from_mix(
+            self.now_playing, 
+            self.context.mix, 
+            True
+        ))
+
+    def on_prev_clicked(self, *args):
+        self.context.deezer.jukebox.start(self._get_from_mix(
+            self.now_playing, 
+            self.context.mix, 
+            False
+        ))

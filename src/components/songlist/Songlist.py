@@ -39,8 +39,11 @@ class Songlist(QtWidgets.QWidget):
         pass
 
     def create_connections(self):
-        self.songlist_table.doubleClicked.connect(self.controller.on_line_double_click)
-        self.songlist_table.selectionModel().selectionChanged.connect(self.controller.on_line_selected)
+        ctrl = self.controller
+        app = self._context.app
+        self.songlist_table.doubleClicked.connect(ctrl.on_line_double_click)
+        self.songlist_table.selectionModel().selectionChanged.connect(ctrl.on_line_selected)
+        app.DZ_PLAYER_EVENT_QUEUELIST_LOADED.connect(ctrl.on_content_loaded)
 
 
 if __name__ == '__main__':

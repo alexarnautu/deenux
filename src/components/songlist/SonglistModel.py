@@ -7,6 +7,7 @@ class SonglistModel(QtCore.QAbstractTableModel):
         super(SonglistModel, self).__init__(parent)
 
         # Processing the data for display
+        self._raw_data = data
         self._data = list(map(lambda t : [t, t.title, t.artist.name], data))
         self._header = header
 
@@ -33,3 +34,7 @@ class SonglistModel(QtCore.QAbstractTableModel):
     @property
     def table_data(self):
         return self._data
+
+    @property
+    def table_raw_data(self):
+        return self._raw_data

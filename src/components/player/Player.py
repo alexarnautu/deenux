@@ -77,6 +77,8 @@ class Player(QtWidgets.QWidget):
 
         self.volume_slider.valueChanged.connect(ctrl.on_volume_change)
         self.play_pause_button.clicked.connect(ctrl.on_play_pause_click)
+        self.next_button.clicked.connect(ctrl.on_next_clicked)
+        self.prev_button.clicked.connect(ctrl.on_prev_clicked)
 
         self.progress_bar.sliderPressed.connect(ctrl.on_progress_bar_pressed)
         self.progress_bar.sliderReleased.connect(ctrl.on_progress_bar_released)
