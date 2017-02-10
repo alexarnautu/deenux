@@ -313,7 +313,10 @@ class Player:
     def seek(self, second, activity_operation_cb=None, operation_user_data=None):
         context = py_object(operation_user_data) if operation_user_data else c_void_p(0)
         cb = activity_operation_cb if activity_operation_cb else c_void_p(0)
-        second = c_uint64(second)
+
+        # HUGE, HUGE WORKAROUND !!, i had to shift the bits
+        second = c_uint64((second << 10) * 976)
+
         if libdeezer.dz_player_seek(self.handle, cb, context, second):
             raise PlayerRequestFailedError('seek: Unable to set seek')
 
