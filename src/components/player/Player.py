@@ -48,14 +48,14 @@ class Player(QtWidgets.QWidget):
         self.volume_slider.setOrientation(QtCore.Qt.Horizontal)
         self.volume_slider.setMaximum(15)
 
-        h_layout.addWidget(self.volume_slider)
+        h_layout.addWidget(self.volume_slider, 16)
         self.playing_label = QtWidgets.QLabel(self)
         self.progress_bar = QtWidgets.QSlider(self)
         self.progress_bar.setOrientation(QtCore.Qt.Horizontal)
 
         h_progress_layout = QtWidgets.QVBoxLayout(self)
         h_progress_layout.addWidget(self.playing_label)
-        h_progress_layout.addWidget(self.progress_bar, 16)
+        h_progress_layout.addWidget(self.progress_bar)
         h_layout.addLayout(h_progress_layout, 80)
         h_layout.insertSpacing(4, 10)
 

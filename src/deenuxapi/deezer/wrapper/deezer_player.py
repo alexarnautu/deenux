@@ -317,7 +317,6 @@ class Player:
         if libdeezer.dz_player_seek(self.handle, cb, context, second):
             raise PlayerRequestFailedError('seek: Unable to set seek')
 
-
     def play_audio_ads(self, activity_operation_cb=None, operation_user_data=None):
         """Load and play an audio ad when required"""
         context = py_object(operation_user_data) if operation_user_data else c_void_p(0)
