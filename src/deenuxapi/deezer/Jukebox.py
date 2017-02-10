@@ -112,6 +112,9 @@ class Jukebox:
         self.log("PREVIOUS => {}".format(self.context.dz_content_url))
         self.player.play(command=PlayerCommand.START_TRACKLIST, index=PlayerIndex.PREVIOUS)
 
+    def seek(self, second):
+        self.player.seek(second)
+
     def toggle_repeat(self):
         self.context.repeat_mode += 1
         if self.context.repeat_mode > PlayerRepeatMode.ALL:
@@ -146,7 +149,7 @@ class Jukebox:
                                      operation_user_data=self)
 
     def set_volume(self, percentage):
-        self.player.set_output_volume(percentage=percentage)
+        self.player.set_output_volume(percentage)
 
     # We set the callback for player events, to print various logs and listen to events
     def player_event_callback(self, handle, event, userdata):
