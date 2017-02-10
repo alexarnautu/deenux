@@ -23,3 +23,4 @@ class SonglistController:
         if item_selected:
             self.context.player.to_play = self.view.songlist_model.table_data[selected.indexes()[0].row()][0]
             self.context.player.current_mix = self.view.songlist_model
+            

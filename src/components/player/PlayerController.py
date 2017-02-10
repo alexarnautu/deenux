@@ -26,7 +26,7 @@ class PlayerController:
         pb = self.view.progress_bar
         pb.setMaximum(self.now_playing.duration * 10)
         pb.setValue(0)
-        pb.setFormat(str(self.now_playing))
+        self.view.playing_label.setText(str(self.now_playing))
 
     def on_track_play_start(self, *args):
         self.update_progress_bar()
@@ -66,3 +66,11 @@ class PlayerController:
         self.context.deezer.jukebox.set_volume(val * 2)
         self.view.volume_slider.blockSignals(was_blocked)
 
+    def on_progress_bar_pressed(self):
+        pass
+
+    def on_progress_bar_released(self):
+        pass
+
+    def on_progress_bar_value_changed(self):
+        pass
