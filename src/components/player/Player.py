@@ -1,17 +1,11 @@
 
 from PyQt5 import QtWidgets, QtCore
+
+from src.components.View import View
 from src.components.player.PlayerController import PlayerController
 
 
-class Player(QtWidgets.QWidget):
-
-    @property
-    def controller(self):
-        return self._controller
-
-    @property
-    def context(self):
-        return self._context
+class Player(QtWidgets.QWidget, View):
 
     def __init__(self, context, *args):
         super(Player, self).__init__(*args)
@@ -21,6 +15,7 @@ class Player(QtWidgets.QWidget):
         self.setup_ui()
         self.retranslate_ui()
         self.create_connections()
+
         self.context.player = self
         self.active = False
 
