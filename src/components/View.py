@@ -4,6 +4,11 @@ class View:
         self._controller = controller
         self._context = context
 
+    def setup(self):
+        self.setup_ui()
+        self.retranslate_ui()
+        self.create_connections()
+
     @property
     def controller(self):
         return self._controller

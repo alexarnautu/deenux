@@ -10,10 +10,7 @@ class Player(QtWidgets.QWidget, View):
     def __init__(self, context, *args):
         QtWidgets.QWidget.__init__(self, *args)
         View.__init__(self, context, PlayerController(self, context))
-
-        self.setup_ui()
-        self.retranslate_ui()
-        self.create_connections()
+        self.setup()
 
         self.context.player = self
         self.active = False
