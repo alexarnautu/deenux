@@ -1,8 +1,8 @@
 class View:
 
-    def __init__(self):
-        self._controller = None
-        self._context = None
+    def __init__(self, context=None, controller=None):
+        self._controller = context
+        self._context = controller
 
     @property
     def controller(self):
