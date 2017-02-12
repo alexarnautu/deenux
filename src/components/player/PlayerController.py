@@ -69,9 +69,7 @@ class PlayerController(Controller):
         val = self.view.progress_bar.value()
         if val == self.now_playing.duration * 10:
             val -= 1
-        sec = val // 10
-        self.context.deezer.jukebox.seek(sec)
-        self.view.progress_bar.setValue(sec * 10)
+        self.context.deezer.jukebox.seek(val * 100)
 
     def on_progress_bar_value_changed(self):
         pass
