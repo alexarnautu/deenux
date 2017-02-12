@@ -1,23 +1,18 @@
 
 from PyQt5 import QtWidgets, QtCore
+
+from src.components.View import View
 from src.components.songlist.SonglistController import SonglistController
 from src.components.songlist.SonglistModel import SonglistModel
 
 
-class Songlist(QtWidgets.QWidget):
-
-    @property
-    def controller(self):
-        return self._controller
-
-    @property
-    def context(self):
-        return self.context
+class Songlist(QtWidgets.QWidget, View):
 
     def __init__(self, context, *args):
         super(Songlist, self).__init__(*args)
         self._controller = SonglistController(self, context)
         self._context = context
+
         self.setup_ui()
         self.retranslate_ui()
         self.create_connections()

@@ -1,17 +1,11 @@
 
 from PyQt5 import QtWidgets, QtCore
+
+from src.components.View import View
 from src.components.toolbar.ToolbarController import ToolbarController
 
 
-class Toolbar(QtWidgets.QWidget):
-
-    @property
-    def controller(self):
-        return self._controller
-
-    @property
-    def context(self):
-        return self._context
+class Toolbar(QtWidgets.QWidget, View):
 
     def __init__(self, context, *args):
         super(Toolbar, self).__init__(*args)

@@ -1,15 +1,7 @@
+from src.components.Controller import Controller
 
 
-class SidemenuController:
-
-    @property
-    def context(self):
-        return self._context
-
-    @property
-    def view(self):
-        return self._view
+class SidemenuController(Controller):
 
     def __init__(self, view, context):
-        self._context = context
-        self._view = view
+        super(SidemenuController, self).__init__(view, context)

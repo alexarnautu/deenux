@@ -1,17 +1,11 @@
 
 from PyQt5 import QtWidgets, QtCore
+
+from src.components.View import View
 from src.components.sidemenu.SidemenuController import SidemenuController
 
 
-class Sidemenu(QtWidgets.QWidget):
-
-    @property
-    def controller(self):
-        return self._controller
-
-    @property
-    def context(self):
-        return self._context
+class Sidemenu(QtWidgets.QWidget, View):
 
     def __init__(self, context, *args):
         super(Sidemenu, self).__init__(*args)

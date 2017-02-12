@@ -3,23 +3,17 @@ from time import sleep
 from threading import Thread
 import time
 
-class PlayerController:
+from src.components.Controller import Controller
+
+
+class PlayerController(Controller):
 
     def __init__(self, view, context):
-        self._context = context
-        self._view = view
+        super(PlayerController, self).__init__(view, context)
 
         self.__pbar_timer = QTimer()
         self.__pbar_timer.timeout.connect(self.update_progress_bar)
         self.__pbar_timer.setInterval(100) # 1/10 seconds, 1000 milliseconds
-
-    @property
-    def view(self):
-        return self._view
-
-    @property
-    def context(self):
-        return self._context
 
     def on_track_content_loaded(self, sender, content_url, is_playing, active):
         self.now_playing = self._context.deezer.get_entity_from_dz_url(content_url)
