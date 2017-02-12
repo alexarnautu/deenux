@@ -49,7 +49,8 @@ class Application(QObject):
         self.context = AppContext (
             deezer = DeezerProvider(DeezerProvider.authorize()),
             app = self,
-            mix = []
+            mix = None,
+            now_playing = None
         )
 
 
