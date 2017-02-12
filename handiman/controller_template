@@ -1,15 +1,7 @@
+from src.components.Controller import Controller
 
 
-class {0}Controller:
-
-    @property
-    def context(self):
-        return self._context
-
-    @property
-    def view(self):
-        return self._view
+class {0}Controller(Controller):
 
     def __init__(self, view, context):
-        self._context = context
-        self._view = view
+        super({0}Controller, self).__init__(view, context)
