@@ -1,6 +1,6 @@
 class Controller:
 
-    def __init__(self, view, context):
+    def __init__(self, view=None, context=None):
         self._view = view
         self._context = context
 
