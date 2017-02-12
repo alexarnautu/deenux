@@ -8,9 +8,8 @@ from src.components.toolbar.ToolbarController import ToolbarController
 class Toolbar(QtWidgets.QWidget, View):
 
     def __init__(self, context, *args):
-        super(Toolbar, self).__init__(*args)
-        self._controller = ToolbarController(self, context)
-        self._context = context
+        QtWidgets.QWidget.__init__(self, *args)
+        View.__init__(self, context, ToolbarController(self, context))
 
         self.setup_ui()
         self.retranslate_ui()
