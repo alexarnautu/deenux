@@ -27,7 +27,6 @@ class Application(QObject):
         self.init_context()
 
     def launch (self):
-
         app = QtWidgets.QApplication(sys.argv)
         self.setup_ui()
         self.create_connections()

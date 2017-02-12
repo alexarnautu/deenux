@@ -22,6 +22,12 @@ class Artist(Model):
     Getters and setters.
     """
 
+    def map(obj):
+        return Artist(
+            id=obj['id'],
+            name=obj['name']
+        )
+
     @property
     def name(self):
         return self.__name

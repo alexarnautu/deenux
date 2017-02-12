@@ -2,7 +2,7 @@ import abc
 
 from src.deenuxapi.deezer.ResourceManager import ResourceManager
 from src.deenuxapi.deezer.Request import Request
-
+from collections import defaultdict
 
 class Model:
     """
@@ -10,7 +10,7 @@ class Model:
     from this class. All model entities have the ID as property.
     """
 
-    basic_cache = {}
+    basic_cache = defaultdict(lambda: {})
 
     @staticmethod
     @abc.abstractmethod
@@ -40,8 +40,6 @@ class Model:
         :return: The model entity
         """
         endpoint = cls.__name__.lower()
-        if endpoint not in Model.basic_cache:
-            Model.basic_cache[endpoint] = {}
         if id in Model.basic_cache[endpoint]:
             return Model.basic_cache[endpoint][id]
 

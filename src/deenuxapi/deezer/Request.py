@@ -2,7 +2,7 @@ import http.client
 import requests
 import json
 from src.deenuxapi.deezer.ResourceManager import ResourceManager
-
+from collections import defaultdict
 
 class Request:
     session_token = None
@@ -21,7 +21,7 @@ class Request:
         response = requests.get(url, params=params)
         decoded_content = response.content.decode()
 
-        return json.loads(decoded_content)
+        return defaultdict(lambda: None, json.loads(decoded_content))
 
     @staticmethod
     def post(url: str, params: dict = {}, payload: dict = {}) -> dict:
