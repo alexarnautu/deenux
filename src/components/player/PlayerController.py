@@ -33,7 +33,10 @@ class PlayerController(Controller):
     def update_progress_bar(self):
         pb_v = self.view.progress_bar.value()
         self.view.progress_bar.setValue(pb_v + 1)
-        if (pb_v == self.now_playing.duration * 10):
+        tm, ts = divmod(self.now_playing.duration, 60)
+        cm, cs = divmod(pb_v // 10, 60)
+        self.view.time_label.setText("%02d:%02d / %02d:%02d" % (cm, cs, tm, ts))
+        if pb_v == self.now_playing.duration * 10:
             self.__pbar_timer.stop()
 
     def on_track_pause(self):
