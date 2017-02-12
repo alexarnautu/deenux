@@ -9,13 +9,9 @@ from src.components.songlist.SonglistModel import SonglistModel
 class Songlist(QtWidgets.QWidget, View):
 
     def __init__(self, context, *args):
-        super(Songlist, self).__init__(*args)
-        self._controller = SonglistController(self, context)
-        self._context = context
-
-        self.setup_ui()
-        self.retranslate_ui()
-        self.create_connections()
+        QtWidgets.QWidget.__init__(self, *args)
+        View.__init__(self, context, SonglistController(self, context))
+        self.setup()
 
     def setup_ui(self):
         self.horizontal_layout = QtWidgets.QHBoxLayout(self)
@@ -35,7 +31,7 @@ class Songlist(QtWidgets.QWidget, View):
 
     def create_connections(self):
         ctrl = self.controller
-        app = self._context.app
+        app = self.context.app
         self.songlist_table.doubleClicked.connect(ctrl.on_line_double_click)
         self.songlist_table.selectionModel().selectionChanged.connect(ctrl.on_line_selected)
         app.DZ_PLAYER_EVENT_QUEUELIST_LOADED.connect(ctrl.on_content_loaded)

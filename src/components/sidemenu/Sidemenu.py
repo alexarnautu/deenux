@@ -8,13 +8,9 @@ from src.components.sidemenu.SidemenuController import SidemenuController
 class Sidemenu(QtWidgets.QWidget, View):
 
     def __init__(self, context, *args):
-        super(Sidemenu, self).__init__(*args)
-        self._controller = SidemenuController(self, context)
-        self._context = context
-
-        self.setup_ui()
-        self.retranslate_ui()
-        self.create_connections()
+        QtWidgets.QWidget.__init__(self, *args)
+        View.__init__(self, context, SidemenuController(self, context))
+        self.setup()
 
     def setup_ui(self):
         self.setMinimumSize(QtCore.QSize(40, 0))

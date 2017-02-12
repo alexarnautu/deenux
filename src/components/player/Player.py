@@ -8,13 +8,9 @@ from src.components.player.PlayerController import PlayerController
 class Player(QtWidgets.QWidget, View):
 
     def __init__(self, context, *args):
-        super(Player, self).__init__(*args)
-        self._controller = PlayerController(self, context)
-        self._context = context
-
-        self.setup_ui()
-        self.retranslate_ui()
-        self.create_connections()
+        QtWidgets.QWidget.__init__(self, *args)
+        View.__init__(self, context, PlayerController(self, context))
+        self.setup()
 
         self.context.player = self
         self.active = False
@@ -60,7 +56,7 @@ class Player(QtWidgets.QWidget, View):
         self.next_button.setText('⏩')
 
     def create_connections(self):
-        app = self._context.app
+        app = self.context.app
         ctrl = self.controller
         app.DZ_PLAYER_EVENT_QUEUELIST_LOADED.connect(ctrl.on_track_content_loaded)
         app.DZ_PLAYER_EVENT_RENDER_TRACK_START.connect(ctrl.on_track_play_start)

@@ -1,8 +1,13 @@
 class View:
 
     def __init__(self, context=None, controller=None):
-        self._controller = context
-        self._context = controller
+        self._controller = controller
+        self._context = context
+
+    def setup(self):
+        self.setup_ui()
+        self.retranslate_ui()
+        self.create_connections()
 
     @property
     def controller(self):
