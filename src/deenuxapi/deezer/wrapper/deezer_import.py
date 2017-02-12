@@ -107,4 +107,5 @@ libdeezer.dz_player_event_get_queuelist_context.argtypes = [c_void_p, c_void_p, 
 libdeezer.dz_player_set_repeat_mode.argtypes = [p_type, c_void_p, py_object]
 libdeezer.dz_player_enable_shuffle_mode.argtypes = [p_type, c_void_p, py_object, p_type]
 libdeezer.dz_player_play_audioads.argtypes = [p_type, c_void_p, py_object]
-
+libdeezer.dz_player_set_output_volume.argtypes = [p_type, c_void_p, py_object, c_int]
+libdeezer.dz_player_seek.argtypes = [p_type, c_void_p, py_object, c_uint64]

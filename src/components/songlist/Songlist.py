@@ -30,6 +30,8 @@ class Songlist(QtWidgets.QWidget):
 
         self.songlist_table.setColumnWidth(0, self.width() // 3)
         self.songlist_table.horizontalHeader().setStretchLastSection(True)
+        self.songlist_table.setSelectionBehavior(QtWidgets.QAbstractItemView.SelectRows)
+        self.songlist_table.setSelectionMode(QtWidgets.QAbstractItemView.SingleSelection)
 
         self.horizontal_layout.addWidget(self.songlist_table)
 
@@ -37,7 +39,11 @@ class Songlist(QtWidgets.QWidget):
         pass
 
     def create_connections(self):
-        self.songlist_table.doubleClicked.connect(self.controller.on_line_double_click)
+        ctrl = self.controller
+        app = self._context.app
+        self.songlist_table.doubleClicked.connect(ctrl.on_line_double_click)
+        self.songlist_table.selectionModel().selectionChanged.connect(ctrl.on_line_selected)
+        app.DZ_PLAYER_EVENT_QUEUELIST_LOADED.connect(ctrl.on_content_loaded)
 
 
 if __name__ == '__main__':

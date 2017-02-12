@@ -292,6 +292,12 @@ class Player:
         if libdeezer.dz_player_set_repeat_mode(self.handle, cb, context, repeat_mode):
             raise PlayerRequestFailedError(u"play: Unable to set repeat mode. Check player commands and info.")
 
+    def set_output_volume(self, percentage, activity_operation_cb=None, operation_user_data=None):
+        context = py_object(operation_user_data) if operation_user_data else c_void_p(0)
+        cb = activity_operation_cb if activity_operation_cb else c_void_p(0)
+        if libdeezer.dz_player_set_output_volume(self.handle, cb, context, percentage):
+            raise PlayerRequestFailedError('set_output_volume: Unable to set output volume')
+
     def enable_shuffle_mode(self, shuffle_mode, activity_operation_cb=None, operation_user_data=None):
         """Set the shuffle mode of the player (randomize track selection)
             :param shuffle_mode: Set to true to activate the random track
@@ -303,6 +309,13 @@ class Player:
         print(type(shuffle_mode))
         if libdeezer.dz_player_enable_shuffle_mode(self.handle, cb, context, shuffle_mode):
             raise PlayerRequestFailedError(u"play: Unable to set repeat mode. Check player commands and info.")
+
+    def seek(self, second, activity_operation_cb=None, operation_user_data=None):
+        context = py_object(operation_user_data) if operation_user_data else c_void_p(0)
+        cb = activity_operation_cb if activity_operation_cb else c_void_p(0)
+        second = c_uint64(second * 10 ** 6)
+        if libdeezer.dz_player_seek(self.handle, cb, context, second):
+            raise PlayerRequestFailedError('seek: Unable to set seek')
 
     def play_audio_ads(self, activity_operation_cb=None, operation_user_data=None):
         """Load and play an audio ad when required"""

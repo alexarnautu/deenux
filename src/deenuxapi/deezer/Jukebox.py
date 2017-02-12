@@ -90,7 +90,16 @@ class Jukebox:
     def toggle_play_pause(self):
         if self.player.is_playing:
             self.log("PAUSE track n° {} of => {}".format(self.context.nb_track_played, self.context.dz_content_url))
-            self.player.pause(activity_operation_cb=self.player_cb)
+            self.player.pause()
+            
+            # Huge workaround, because the native sdk doesn't fire the DZ_PLAYER_EVENT_RENDER_TRACK_PAUSED event
+            # So we have to fire it manually
+            plr = self.player
+            event_name = 'DZ_PLAYER_EVENT_RENDER_TRACK_PAUSED'
+            if event_name in self.event_handlers:
+                for handler in self.event_handlers[event_name]:
+                    handler(event_name, self, plr.current_content.decode('ascii'), plr.is_playing, plr.active)
+            
         else:
             self.log("RESUME track n° {} of => {}".format(self.context.nb_track_played, self.context.dz_content_url))
             self.player.resume()
@@ -102,6 +111,9 @@ class Jukebox:
     def previous(self):
         self.log("PREVIOUS => {}".format(self.context.dz_content_url))
         self.player.play(command=PlayerCommand.START_TRACKLIST, index=PlayerIndex.PREVIOUS)
+
+    def seek(self, second):
+        self.player.seek(second)
 
     def toggle_repeat(self):
         self.context.repeat_mode += 1
@@ -135,6 +147,9 @@ class Jukebox:
             self.log("SHUTDOWN CONNECTION - connect_handle = {}".format(self.context.connect_handle))
             self.connection.shutdown(activity_operation_cb=self.dz_connect_deactivate_cb,
                                      operation_user_data=self)
+
+    def set_volume(self, percentage):
+        self.player.set_output_volume(percentage)
 
     # We set the callback for player events, to print various logs and listen to events
     def player_event_callback(self, handle, event, userdata):

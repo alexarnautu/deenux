@@ -9,6 +9,10 @@ class Player(QtWidgets.QWidget):
     def controller(self):
         return self._controller
 
+    @property
+    def context(self):
+        return self._context
+
     def __init__(self, context, *args):
         super(Player, self).__init__(*args)
         self._controller = PlayerController(self, context)
@@ -17,35 +21,68 @@ class Player(QtWidgets.QWidget):
         self.setup_ui()
         self.retranslate_ui()
         self.create_connections()
+        self.context.player = self
+        self.active = False
 
     def setup_ui(self):
-        self.setMinimumSize(QtCore.QSize(790, 45))
-        self.horizontalLayout = QtWidgets.QHBoxLayout(self)
-        self.playStopButton = QtWidgets.QPushButton(self)
-        self.playStopButton.setMinimumSize(QtCore.QSize(0, 27))
-        self.playStopButton.setObjectName("playStopButton")
-        self.horizontalLayout.addWidget(self.playStopButton)
-        self.horizontalSlider = QtWidgets.QSlider(self)
-        self.horizontalSlider.setOrientation(QtCore.Qt.Horizontal)
-        self.horizontalSlider.setObjectName("horizontalSlider")
-        self.horizontalLayout.addWidget(self.horizontalSlider)
-        self.progress_bar = QtWidgets.QProgressBar(self)
-        self.progress_bar.setAlignment(QtCore.Qt.AlignJustify|QtCore.Qt.AlignTop)
-        self.progress_bar.setObjectName("progressBar")
-        self.horizontalLayout.addWidget(self.progress_bar)
-        self.horizontalLayout.setStretch(0, 1)
-        self.horizontalLayout.setStretch(1, 16)
-        self.horizontalLayout.setStretch(2, 80)
+        self.setMinimumSize(QtCore.QSize(790, 60))
+        h_layout = QtWidgets.QHBoxLayout(self)
+
+        self.prev_button = QtWidgets.QPushButton(self)
+        self.prev_button.setEnabled(False)
+        self.prev_button.setMaximumWidth(30)
+
+        self.play_pause_button = QtWidgets.QPushButton(self)
+        self.play_pause_button.setEnabled(False)
+        self.play_pause_button.setMaximumWidth(30)
+
+        self.next_button = QtWidgets.QPushButton(self)
+        self.next_button.setEnabled(False)
+        self.next_button.setMaximumWidth(30)
+
+        h_layout.addWidget(self.prev_button)
+        h_layout.addWidget(self.play_pause_button)
+        h_layout.addWidget(self.next_button)
+
+        self.volume_slider = QtWidgets.QSlider(self)
+        self.volume_slider.setOrientation(QtCore.Qt.Horizontal)
+        self.volume_slider.setMaximum(15)
+
+        h_layout.addWidget(self.volume_slider, 16)
+        self.playing_label = QtWidgets.QLabel(self)
+        self.progress_bar = QtWidgets.QSlider(self)
+        self.progress_bar.setOrientation(QtCore.Qt.Horizontal)
+
+        h_progress_layout = QtWidgets.QVBoxLayout(self)
+        h_progress_layout.addWidget(self.playing_label)
+        h_progress_layout.addWidget(self.progress_bar)
+        h_layout.addLayout(h_progress_layout, 80)
+        h_layout.insertSpacing(4, 10)
 
     def retranslate_ui(self):
-        _translate = QtCore.QCoreApplication.translate
-        self.setWindowTitle(_translate("Form", "Form"))
-        self.playStopButton.setText(_translate("Form", "Play"))
+        self.play_pause_button.setText('▶')
+        self.prev_button.setText('⏪')
+        self.next_button.setText('⏩')
 
     def create_connections(self):
         app = self._context.app
-        app.DZ_PLAYER_EVENT_QUEUELIST_LOADED.connect(self.controller.on_track_content_loaded)
-        app.DZ_PLAYER_EVENT_RENDER_TRACK_START.connect(self.controller.on_track_play_start)
+        ctrl = self.controller
+        app.DZ_PLAYER_EVENT_QUEUELIST_LOADED.connect(ctrl.on_track_content_loaded)
+        app.DZ_PLAYER_EVENT_RENDER_TRACK_START.connect(ctrl.on_track_play_start)
+
+        app.DZ_PLAYER_EVENT_RENDER_TRACK_PAUSED.connect(ctrl.on_track_pause)
+        app.DZ_PLAYER_EVENT_LIMITATION_FORCED_PAUSE.connect(ctrl.on_track_pause)
+        app.DZ_PLAYER_EVENT_RENDER_TRACK_RESUMED.connect(ctrl.on_track_resume)
+        app.DZ_PLAYER_EVENT_RENDER_TRACK_END.connect(ctrl.on_track_stop)
+
+        self.volume_slider.valueChanged.connect(ctrl.on_volume_change)
+        self.play_pause_button.clicked.connect(ctrl.on_play_pause_click)
+        self.next_button.clicked.connect(ctrl.on_next_clicked)
+        self.prev_button.clicked.connect(ctrl.on_prev_clicked)
+
+        self.progress_bar.sliderPressed.connect(ctrl.on_progress_bar_pressed)
+        self.progress_bar.sliderReleased.connect(ctrl.on_progress_bar_released)
+        self.progress_bar.valueChanged.connect(ctrl.on_progress_bar_value_changed)
 
 if __name__ == '__main__':
     import sys

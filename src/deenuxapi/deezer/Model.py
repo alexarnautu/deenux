@@ -21,6 +21,9 @@ class Model:
         :return: A model object with mapped data
         """
 
+    def __eq__(self, cpt):
+        return cpt.__id == self.__id
+
     def __init__(self, id: int):
         """
         Constructor of Model.
