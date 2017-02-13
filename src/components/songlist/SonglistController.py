@@ -25,6 +25,3 @@ class SonglistController(Controller):
         if item_selected:
             self.context.to_play = self.view.songlist_model.table_data[selected.indexes()[0].row()][0]
             self.context.current_mix = self.view.songlist_model
-
-    def on_content_loaded(self, sender, content_url, is_playing, active):
-        pass
