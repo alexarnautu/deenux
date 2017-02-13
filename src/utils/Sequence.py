@@ -5,30 +5,22 @@ class Sequence:
 
     def __init__(self, n, k, random, cyclic):
 
-        self.__n = n
-        self.__random = random
-        self.__current = k
-        self.__cyclic = cyclic
-        self.shuffle()
-
-    def shuffle(self):
-        
-        n = self.__n
         seq = [None] * n
         inv_seq = [None] * n
         perm = list(range(n))
 
-        if self.__random:
+        if random:
             shuffle(perm)
 
         for i in range(n - 1):
             seq[perm[i]] = perm[i + 1]
             inv_seq[perm[i + 1]] = perm[i]
-        seq[perm[-1]] = perm[0] if self.__cyclic else None
-        inv_seq[perm[0]] = perm[-1] if self.__cyclic else None
+        seq[perm[-1]] = perm[0] if cyclic else None
+        inv_seq[perm[0]] = perm[-1] if cyclic else None
 
         self.seq = seq
         self.inv_seq = inv_seq
+        self.__current = k
 
     @property
     def current(self):
