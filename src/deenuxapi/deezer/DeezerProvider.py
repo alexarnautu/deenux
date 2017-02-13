@@ -1,4 +1,5 @@
 from urllib.parse import quote
+import re
 
 from src.deenuxapi.deezer.Request import Request
 from src.deenuxapi.deezer.model.User import User
@@ -76,10 +77,15 @@ class DeezerProvider(Provider):
         return data['access_token']
 
     @staticmethod
+    def get_info_from_dz_url(url: str):
+        splitted = re.split(r"[-/]", url)
+        id = int(splitted[-1])
+        model_name = splitted[-2].capitalize()
+        return id, globals()[model_name]
+
+    @staticmethod
     def get_entity_from_dz_url(url: str):
         """
         """
-        splitted = url.split('/')
-        id = splitted[-1]
-        model_name = splitted[-2].capitalize()
-        return globals()[model_name].get(id)
+        info = DeezerProvider.get_info_from_dz_url(url)
+        return info[1].get(info[0])
