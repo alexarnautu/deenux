@@ -26,14 +26,13 @@ class Trackcontrols(QtWidgets.QWidget, View):
         self.next_button.setEnabled(False)
         self.next_button.setMaximumWidth(30)
 
-        h_layout.addWidget(self.prev_button)
-        h_layout.addWidget(self.play_pause_button)
-        h_layout.addWidget(self.next_button)
-
         self.volume_slider = QtWidgets.QSlider(self)
         self.volume_slider.setOrientation(QtCore.Qt.Horizontal)
         self.volume_slider.setMaximum(15)
 
+        h_layout.addWidget(self.prev_button)
+        h_layout.addWidget(self.play_pause_button)
+        h_layout.addWidget(self.next_button)
         h_layout.addWidget(self.volume_slider, 16)
 
     def retranslate_ui(self):

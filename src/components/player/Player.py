@@ -18,13 +18,14 @@ class Player(QtWidgets.QWidget, View):
         self.active = False
 
     def setup_ui(self):
+        self.setMinimumSize(QtCore.QSize(790, 60))
         h_layout = QtWidgets.QHBoxLayout(self)
         self.track_info = Trackinfo(self.context)
         self.track_controls = Trackcontrols(self.context)
         self.track_controls.setMinimumWidth(230)
 
-        h_layout.addWidget(self.track_controls, 1)
-        h_layout.addWidget(self.track_info, 3)
+        h_layout.addWidget(self.track_controls, 2)
+        h_layout.addWidget(self.track_info, 7)
 
     def retranslate_ui(self):
         pass
