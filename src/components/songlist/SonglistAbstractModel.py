@@ -1,10 +1,10 @@
 from PyQt5 import QtGui, QtCore
 import sys
 
-class SonglistModel(QtCore.QAbstractTableModel):
+class SonglistAbstractModel(QtCore.QAbstractTableModel):
 
     def __init__(self, data, header, parent=None):
-        super(SonglistModel, self).__init__(parent)
+        super(SonglistAbstractModel, self).__init__(parent)
 
         # Processing the data for display
         self._raw_data = data
@@ -15,7 +15,7 @@ class SonglistModel(QtCore.QAbstractTableModel):
         return len(self._data)
 
     def columnCount(self, parent):
-        return 2
+        return len(self._header)
 
     def data(self, index, role):
         if not index.isValid() or role != QtCore.Qt.DisplayRole:
@@ -28,7 +28,7 @@ class SonglistModel(QtCore.QAbstractTableModel):
     def headerData(self, col, orientation, role):
         if orientation != QtCore.Qt.Horizontal or role != QtCore.Qt.DisplayRole:
             return QtCore.QVariant()
-        
+
         return self._header[col]
 
     @property
