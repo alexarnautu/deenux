@@ -8,6 +8,8 @@ from src.components.songlist.SonglistModel import SonglistModel
 
 class Songlist(QtWidgets.QWidget, View):
 
+    kEndOfTheWorldIndex = 50000
+
     def __init__(self, context, *args):
         QtWidgets.QWidget.__init__(self, *args)
         View.__init__(self, context, SonglistController(self, context))
@@ -16,7 +18,9 @@ class Songlist(QtWidgets.QWidget, View):
     def setup_ui(self):
         self.horizontal_layout = QtWidgets.QHBoxLayout(self)
         self.songlist_table = QtWidgets.QTableView()
-        self.songlist_model = SonglistModel(self.controller.context.deezer.me.get_favourite_tracks(0, 50000), ["Title", "Artist"])
+        self.songlist_model = SonglistModel(
+            self.controller.context.deezer.me.get_favourite_tracks(0, self.kEndOfTheWorldIndex),
+            ["Title", "Artist"])
         self.songlist_table.setModel(self.songlist_model)
 
         self.songlist_table.setColumnWidth(0, self.width() // 3)
