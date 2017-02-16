@@ -2,18 +2,24 @@ from PyQt5.QtCore import QRegExp
 from PyQt5.QtCore import Qt
 from src.components.Controller import Controller
 from src.utils.Sequence import Sequence
-
+from src.utils.Constants import Constants
 
 class SonglistController(Controller):
 
     def __init__(self, view, context):
         super(SonglistController, self).__init__(view, context)
 
-    def on_line_double_click(self, index):
-        self.context.mix = self.view.songlist_model.table_raw_data
+    def on_line_double_click(self, proxy_index):
+        # TODO(mirceadino): Fix this workaround.
+        model = proxy_index.model()
+        index = model.mapToSource(proxy_index)
+        self.context.mix = list(map(
+            lambda i : model.data(proxy_index.sibling(i, 0), Constants.FULL_DATA_ROLE),
+            range(model.rowCount())
+        ))
         self.context.sequence = Sequence(
             len(self.context.mix),
-            index.row(),
+            proxy_index.row(),
             self.context.shuffle,
             True # for now, TODO change
         )
@@ -26,12 +32,16 @@ class SonglistController(Controller):
             self.context.to_play = self.view.songlist_model.table_data[selected.indexes()[0].row()][0]
             self.context.current_mix = self.view.songlist_model
 
-    def search_within_tracks(self):
+    @Controller.async
+    def on_searchbar_text_changed(self, *args):
         """
         Filters the proxy model. If the string in the search bar is a substring in any field of the entry, the entry is
         retained in the filtering.
         """
         current_search_within_tracks_query = self.view.search_bar.displayText()
+        self._mx.lock()
         self.view.songlist_proxy_model.setFilterRegExp(
-        QRegExp(current_search_within_tracks_query, Qt.CaseInsensitive, QRegExp.FixedString))
+            QRegExp(current_search_within_tracks_query, Qt.CaseInsensitive, QRegExp.FixedString)
+        )
         self.view.songlist_proxy_model.setFilterKeyColumn(-1)
+        self._mx.unlock()

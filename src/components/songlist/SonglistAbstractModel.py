@@ -1,5 +1,6 @@
 from PyQt5 import QtGui, QtCore
 import sys
+from src.utils.Constants import Constants
 
 class SonglistAbstractModel(QtCore.QAbstractTableModel):
 
@@ -18,7 +19,11 @@ class SonglistAbstractModel(QtCore.QAbstractTableModel):
         return len(self._header)
 
     def data(self, index, role):
-        if not index.isValid() or role != QtCore.Qt.DisplayRole:
+        if not index.isValid():
+            return QtCore.QVariant()
+        if role == Constants.FULL_DATA_ROLE:
+            return self._data[index.row()][0]
+        if role != QtCore.Qt.DisplayRole:
             return QtCore.QVariant()
 
         row = index.row()

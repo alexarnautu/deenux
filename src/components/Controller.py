@@ -1,4 +1,4 @@
-from PyQt5.QtCore import QRunnable, QThreadPool
+from PyQt5.QtCore import QRunnable, QThreadPool, QMutex
 
 
 class Controller:
@@ -8,6 +8,7 @@ class Controller:
     def __init__(self, view=None, context=None):
         self._view = view
         self._context = context
+        self._mx = QMutex()
 
     @property
     def context(self):

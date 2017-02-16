@@ -48,7 +48,7 @@ class Songlist(QtWidgets.QWidget, View):
         ctrl = self.controller
         app = self.context.app
 
-        self.search_bar.textChanged.connect(ctrl.search_within_tracks)
+        self.search_bar.textChanged.connect(ctrl.on_searchbar_text_changed)
         self.songlist_table.doubleClicked.connect(ctrl.on_line_double_click)
         self.songlist_table.selectionModel().selectionChanged.connect(ctrl.on_line_selected)
 
