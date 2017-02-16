@@ -25,3 +25,13 @@ class SonglistController(Controller):
         if item_selected:
             self.context.to_play = self.view.songlist_model.table_data[selected.indexes()[0].row()][0]
             self.context.current_mix = self.view.songlist_model
+
+    def search_within_tracks(self):
+        """
+        Filters the proxy model. If the string in the search bar is a substring in any field of the entry, the entry is
+        retained in the filtering.
+        """
+        current_search_within_tracks_query = self.view.search_bar.displayText()
+        self.view.songlist_proxy_model.setFilterRegExp(
+        QRegExp(current_search_within_tracks_query, Qt.CaseInsensitive, QRegExp.FixedString))
+        self.view.songlist_proxy_model.setFilterKeyColumn(-1)
