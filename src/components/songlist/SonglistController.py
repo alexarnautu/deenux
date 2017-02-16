@@ -10,9 +10,7 @@ class SonglistController(Controller):
         super(SonglistController, self).__init__(view, context)
 
     def on_line_double_click(self, proxy_index):
-        # TODO(mirceadino): Fix this workaround.
         model = proxy_index.model()
-        index = model.mapToSource(proxy_index)
         self.context.mix = list(map(
             lambda i : model.data(proxy_index.sibling(i, 0), Constants.FULL_DATA_ROLE),
             range(model.rowCount())
@@ -23,7 +21,7 @@ class SonglistController(Controller):
             self.context.shuffle,
             True # for now, TODO change
         )
-        self.context.deezer.jukebox.start(index.model().table_data[index.row()][0])
+        self.context.deezer.jukebox.start(model.data(proxy_index, Constants.FULL_DATA_ROLE))
 
     def on_line_selected(self, selected, deselected):
         item_selected = len(selected.indexes()) > 0
