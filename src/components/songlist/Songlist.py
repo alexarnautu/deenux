@@ -20,6 +20,7 @@ class Songlist(QtWidgets.QWidget, View):
         self.vertical_layout = QtWidgets.QVBoxLayout(self)
         self.search_bar = QtWidgets.QLineEdit(self)
         self.songlist_table = QtWidgets.QTableView()
+        self.songlist_table.setSortingEnabled(True)
         self.songlist_abstract_model = SonglistAbstractModel(
             self.controller.context.deezer.me.get_favourite_tracks(0, self.kEndOfTheWorldIndex),
             ["Title", "Artist"])
