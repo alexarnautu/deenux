@@ -77,19 +77,22 @@ class PlayerController(Controller):
         pass
 
     @staticmethod
-    def _get_from_mix(playing, mix, direction):
-        return mix[mix.index(playing) + (1 if direction else -1)] # for now
+    def _next_from_mix(current_track, mix):
+        next_track_index = mix.index(current_track) + 1
+        if next_track_index >= len(mix):
+            next_track_index = 0
+        return mix[next_track_index]
+
+    @staticmethod
+    def _prev_from_mix(current_track, mix):
+        prev_track_index = mix.index(current_track) - 1
+        if prev_track_index < 0:
+            prev_track_index = len(mix)-1
+        return mix[prev_track_index]
 
     def on_next_clicked(self):
-        self.context.deezer.jukebox.start(self._get_from_mix(
-            self.now_playing, 
-            self.context.mix, 
-            True
-        ))
+        self.context.deezer.jukebox.start(self._next_from_mix(self.now_playing, self.context.mix))
 
     def on_prev_clicked(self, *args):
-        self.context.deezer.jukebox.start(self._get_from_mix(
-            self.now_playing, 
-            self.context.mix, 
-            False
-        ))
+        self.context.deezer.jukebox.start(self._prev_from_mix(self.now_playing, self.context.mix))
+
