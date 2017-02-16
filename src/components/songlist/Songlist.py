@@ -51,7 +51,6 @@ class Songlist(QtWidgets.QWidget, View):
         self.search_bar.textChanged.connect(ctrl.search_within_tracks)
         self.songlist_table.doubleClicked.connect(ctrl.on_line_double_click)
         self.songlist_table.selectionModel().selectionChanged.connect(ctrl.on_line_selected)
-        app.DZ_PLAYER_EVENT_QUEUELIST_LOADED.connect(ctrl.on_content_loaded)
 
     @property
     def songlist_model(self):
