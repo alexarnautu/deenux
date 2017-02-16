@@ -8,10 +8,8 @@ class SonglistController(Controller):
     def __init__(self, view, context):
         super(SonglistController, self).__init__(view, context)
 
-    def on_line_double_click(self, proxy_index):
-        # TODO(mirceadino): Fix this workaround.
-        index = proxy_index.model().mapToSource(proxy_index)
-        self.context.deezer.jukebox.start(index.model().table_data[index.row()][0])
+    def on_line_double_click(self, index):
+        self.context.deezer.jukebox.start(index.model().track(index))
 
     def on_line_selected(self, selected, deselected):
         item_selected = len(selected.indexes()) > 0

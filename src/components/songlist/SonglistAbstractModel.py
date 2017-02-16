@@ -31,6 +31,18 @@ class SonglistAbstractModel(QtCore.QAbstractTableModel):
 
         return self._header[col]
 
+    def track(self, index):
+        """
+        Returns an instance of model.Track with information about the song to be played.
+        :param index: QModelIndex
+        :return: model.Track that corresponds to the row of the index
+        """
+        if not index.isValid():
+            return QtCore.QVariant()
+
+        row = index.row()
+        return self._data[row][0]
+
     @property
     def table_data(self):
         return self._data

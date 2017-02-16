@@ -20,14 +20,18 @@ class Songlist(QtWidgets.QWidget, View):
         self.vertical_layout = QtWidgets.QVBoxLayout(self)
         self.search_bar = QtWidgets.QLineEdit(self)
         self.songlist_table = QtWidgets.QTableView()
-        self.songlist_table.setSortingEnabled(True)
+
         self.songlist_abstract_model = SonglistAbstractModel(
             self.controller.context.deezer.me.get_favourite_tracks(0, self.kEndOfTheWorldIndex),
             ["Title", "Artist"])
         self.songlist_proxy_model = SonglistSortFilterProxyModel(self.songlist_abstract_model)
-        self.songlist_table.setModel(self.songlist_proxy_model)
 
         self.search_bar.setPlaceholderText("Search within tracks")
+
+        # NOTE(mirceadino): If enabling sorting is moved after setting the model, it will cause the table to be sorted
+        # by some column initially. This might be wanted in the future, but it isn't for now.
+        self.songlist_table.setSortingEnabled(True)
+        self.songlist_table.setModel(self.songlist_proxy_model)
 
         self.songlist_table.setColumnWidth(0, self.width() // 3)
         self.songlist_table.horizontalHeader().setStretchLastSection(True)
