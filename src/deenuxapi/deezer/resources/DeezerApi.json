@@ -14,7 +14,7 @@
     "perms": ["basic_access", "offline_access", "manage_library", "delete_library"],
 
     "cache_path_linux": "/var/tmp/deenuxcache",
-    "cache_path_windows": "",
+    "cache_path_windows": "C:\\ProgramData\\deenux",
     "cache_path_darwin": "/var/tmp/deenuxcache"
   }
 

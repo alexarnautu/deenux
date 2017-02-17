@@ -54,10 +54,9 @@ if platform.system() == u'Darwin':
     lib_name = u'libdeezer'
     lib_path += u"/macosx/libdeezer.framework/Versions/Current/"
     libdeezer = cdll.LoadLibrary(lib_path+lib_name)
-elif platform.system() == u'windows':
+elif platform.system() == u'Windows':
     lib_path += u"/windows/DLLs/"
-    lib_path = os.path.abspath(os.pardir)
-    lib_path = os.path.join(lib_path, u'bin', u'windows', u'DLLs')
+    lib_path = os.path.abspath(lib_path)
     lib_name = u'libdeezer.'
     lib_name += u'x64.dll' if sys.maxsize > 2**32 else u'x86.dll'
     lib_path = os.path.join(lib_path, lib_name)
