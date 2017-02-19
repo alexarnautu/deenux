@@ -2,6 +2,7 @@ from PyQt5.QtCore import QTimer
 from time import sleep
 from threading import Thread
 import time
+from src.utils.Constants import Constants
 
 from src.components.Controller import Controller
 
@@ -16,7 +17,7 @@ class PlayerController(Controller):
         self.context.now_playing = None
         pb = self.view.track_info.progress_bar
         pb.setValue(0)
-        pb.setMaximum(99999999)
+        pb.setMaximum(Constants.END_OF_THE_WORLD)
         self.view.track_info.playing_label.setText("Loading...")
         self.context.now_playing = self._context.deezer.get_entity_from_dz_url(content_url)
         pb.setMaximum(self.context.now_playing.duration * 10)

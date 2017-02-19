@@ -22,6 +22,7 @@ class Artist(Model):
     Getters and setters.
     """
 
+    @staticmethod
     def map(obj):
         return Artist(
             id=obj['id'],

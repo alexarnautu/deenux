@@ -6,10 +6,10 @@ from src.components.songlist.SonglistController import SonglistController
 from src.components.songlist.SonglistAbstractModel import SonglistAbstractModel
 from src.components.songlist.SonglistSortFilterProxyModel import SonglistSortFilterProxyModel
 
+from src.utils.Constants import Constants
+
 
 class Songlist(QtWidgets.QWidget, View):
-
-    kEndOfTheWorldIndex = 50000
 
     def __init__(self, context, *args):
         QtWidgets.QWidget.__init__(self, *args)
@@ -22,7 +22,7 @@ class Songlist(QtWidgets.QWidget, View):
         self.songlist_table = QtWidgets.QTableView()
 
         self.songlist_abstract_model = SonglistAbstractModel(
-            self.controller.context.deezer.me.get_favourite_tracks(0, self.kEndOfTheWorldIndex),
+            self.controller.context.deezer.me.get_favourite_tracks(0, Constants.END_OF_THE_WORLD),
             ["Title", "Artist"])
         self.songlist_proxy_model = SonglistSortFilterProxyModel(self.songlist_abstract_model)
 
