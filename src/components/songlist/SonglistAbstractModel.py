@@ -9,7 +9,10 @@ class SonglistAbstractModel(QtCore.QAbstractTableModel):
 
         # Processing the data for display
         self._raw_data = data
-        self._data = list(map(lambda t : [t, t.title, t.artist.name], data))
+        self._data = [
+            [t, t.title, t.artist.name]
+            for t in data
+        ]
         self._header = header
 
     def rowCount(self, parent):

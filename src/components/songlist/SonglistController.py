@@ -11,10 +11,10 @@ class SonglistController(Controller):
 
     def on_line_double_click(self, proxy_index):
         model = proxy_index.model()
-        self.context.mix = list(map(
-            lambda i : model.data(proxy_index.sibling(i, 0), Constants.FULL_DATA_ROLE),
-            range(model.rowCount())
-        ))
+        self.context.mix = [
+            model.data(proxy_index.sibling(i, 0), Constants.FULL_DATA_ROLE)
+            for i in range(model.rowCount())
+        ]
         self.context.sequence = Sequence(
             len(self.context.mix),
             proxy_index.row(),
